@@ -1,5 +1,12 @@
+from dotenv import load_dotenv
+import os
 import socketio
 import time
+
+load_dotenv()
+
+serverAddress = os.getenv('SERVER_ADDRESS')
+clientID = os.getenv('clientID')
 
 sio = socketio.Client()
 sion = socketio.ClientNamespace()
@@ -19,5 +26,5 @@ def my_event(data):
 def disconnect():
     print('disconnected from server')
 
-sio.connect('http://localhost:3000')
-sio.wait()
+sio.connect(serverAddress)
+sio.wait()  
