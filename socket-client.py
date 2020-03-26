@@ -4,7 +4,6 @@ import socketio
 import time
 
 load_dotenv()
-
 serverAddress = os.getenv('SERVER_ADDRESS')
 clientID = os.getenv('clientID')
 
@@ -26,5 +25,7 @@ def my_event(data):
 def disconnect():
     print('disconnected from server')
 
-sio.connect(serverAddress)
+sio.connect(serverAddress, headers={
+    'clientId': clientID
+})
 sio.wait()  
