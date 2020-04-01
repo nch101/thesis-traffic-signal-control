@@ -4,7 +4,7 @@
 
 # - *- coding: utf- 8 - *-
 
-def init():
+def initAutomatic(quantity, lightStatus, timeRed, delta):
     lightStatus = []
     timeLight = []
     for index in range(0, quantity):
@@ -14,7 +14,7 @@ def init():
         else:
             timeLight.append(delta)
 
-def timeAndLightStatusUpdate():
+def automatic(timeRed, timeYellow, timeGreen, timeLight, lightStatus, quantity):
     for index in range(0, quantity):
         if ((timeLight[index] == 0) and (lightStatus[index] == 'yellow')):
             timeLight[index] = timeRed[index]
@@ -25,15 +25,3 @@ def timeAndLightStatusUpdate():
         if ((timeLight[index] == 0) and (lightStatus[index] == 'green')):
             timeLight[index] = timeYellow[index]
             lightStatus[index] = 'yellow'
-
-def automatic(timeRed, timeYellow, timeGreen, lightMode):
-    if (first):
-        init()
-        first = False
-    timeAndLightStatusUpdate()
-    # showTime()
-    # showLight()
-    timeLight = list(map(lambda x: x-1, timeLight))
-
-        
-

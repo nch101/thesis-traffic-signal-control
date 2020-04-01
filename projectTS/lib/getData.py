@@ -15,7 +15,7 @@ class getData:
         if (self.__res.status_code == 200):
             self.__modeControl = self.__res.json().get('modeControl')
             self.__trafficLights = self.__res.json().get('trafficLights')
-            self.__quantity = len(self.__trafficLights)
+            self.__nTrafficLights = len(self.__trafficLights)
                 
 
     def timeRed(self):
@@ -39,8 +39,8 @@ class getData:
     def modeControl(self):
         return self.__modeControl
 
-    def quantity(self):
-        return self.__quantity
+    def nTrafficLights(self):
+        return self.__nTrafficLights
 
 
 """ getDataURL = 'http://localhost:3000/intersection/get-data/'
