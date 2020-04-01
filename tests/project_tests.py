@@ -1,5 +1,7 @@
 from nose.tools import *
-import trafficLight
+import sys
+sys.path.append('/home/huy/Documents/py-project')
+import projectTS
 
 def setup():
     print('SETUP!')

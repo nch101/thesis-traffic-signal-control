@@ -1,3 +1,4 @@
 .env
 tests/__pycache__/
-trafficLight/__pycache__/
+projectTS/__pycache__/
+projectTS/lib/__pycache__/

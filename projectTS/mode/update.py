@@ -1,4 +1,6 @@
-from .trafficLight.lib.getData import * 
+import sys
+sys.path.append('/home/huy/Documents/py-project')
+from projectTS.lib.getData import getData 
 from dotenv import load_dotenv
 import os
 import socketio
@@ -9,7 +11,7 @@ interID = os.getenv('INTERSECTION_ID')
 token = os.getenv('ACCESS_TOKEN')
 
 sio = socketio.Client()
-intersection = gdata.getData(getDataURL, interID, token)
+intersection = getData(getDataURL, interID, token)
 
 """ @sio.on('update-mode', namespace='/update-mode/'+interID)
 def updateMode():
