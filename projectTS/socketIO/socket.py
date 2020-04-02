@@ -9,6 +9,7 @@ import os
 import socketio
 import sys
 sys.path.append('/home/huy/Documents/py-project')
+import projectTS.vals as vals
 from projectTS.modeControl.updateMode import changeMode
 
 load_dotenv()
@@ -25,12 +26,12 @@ def connect():
 
 sio.on('change-light', changeLight, namespace)
 sio.on('change-mode', changeMode, namespace)
-sio.emit('current-time', timeLight, namespace)
-sio.emit('light-status', lightStatus, namespace)
+sio.emit('current-time', vals.timeLight, namespace)
+sio.emit('light-status', vals.lightStatus, namespace)
 
 @sio.event
 def disconnect():
     print('disconnected from server')
 
 sio.connect(serverAddress, headers = headers )
-sio.wait()  
+sio.wait()

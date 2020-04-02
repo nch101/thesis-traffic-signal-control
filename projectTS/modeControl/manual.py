@@ -4,14 +4,18 @@
 
 # - *- coding: utf- 8 - *-
 
-def manual(quantity, lightStatus, timeLight, timeYellow):
-    for index in range(0, quantity):
-        if (lightStatus[index] == 'red'):
-            lightStatus[index] = 'green'
-        elif (lightStatus[index] == 'yellow'):
-            lightStatus[index] = 'red'
-        elif (lightStatus[index] == 'green'):
-            lightStatus[index] = 'yellow'
-            timeLight[index] = timeYellow[index]
+import sys
+sys.path.append('/home/huy/Documents/py-project')
+import projectTS.vals as vals
+
+def manual(timeYellow):
+    for index in range(0, vals.nTrafficLights):
+        if (vals.lightStatus[index] == 'red'):
+            vals.lightStatus[index] = 'green'
+        elif (vals.lightStatus[index] == 'yellow'):
+            vals.lightStatus[index] = 'red'
+        elif (vals.lightStatus[index] == 'green'):
+            vals.lightStatus[index] = 'yellow'
+            vals.timeLight[index] = timeYellow[index]
         else:
             pass
