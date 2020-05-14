@@ -30,8 +30,15 @@ sio.on('[intersection]-change-mode', changeMode, controlLightNsp)
 sio.on('[intersection]-change-light', changeLight, controlLightNsp)
 
 def updateStateLight():
-    sio.emit('[intersection]-time-light', vals.timeLight, stateLightNsp)
-    sio.emit('[intersection]-light-state', vals.lightStatus, stateLightNsp)
+    try:
+        sio.emit('[intersection]-time-light', vals.timeLight, stateLightNsp)
+        sio.emit('[intersection]-light-state', vals.lightStatus, stateLightNsp)
+    except:
+        print('xxx updateStateLight() was not executed xxx')
+
 @sio.event
 def disconnect():
     print('disconnected from server')
+    print('Change mode when connect lost')
+    vals.mode = 'automatic'
+
