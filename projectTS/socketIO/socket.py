@@ -10,13 +10,14 @@ import socketio
 import sys
 sys.path.append('/home/huy/Documents/py-project')
 import projectTS.vals as vals
-from projectTS.modeControl.updateMode import changeMode
+from projectTS.modeControl.updateMode import changeMode, changeLight
 
 load_dotenv()
 serverAddress = os.getenv('SERVER_ADDRESS')
 interID = os.getenv('INTERSECTION_ID')
 headers = { 'intersectionId': interID }
-namespace = '/intersection/' + interID
+stateLightNsp = '/socket/state-light'
+controlLightNsp = '/socket/control-light'
 
 sio = socketio.Client()
 
@@ -24,14 +25,13 @@ sio = socketio.Client()
 def connect():
     print('connection established')
 
-sio.on('change-light', changeLight, namespace)
-sio.on('change-mode', changeMode, namespace)
-sio.emit('current-time', vals.timeLight, namespace)
-sio.emit('light-status', vals.lightStatus, namespace)
+sio.connect(serverAddress, headers = headers, namespaces=[stateLightNsp, controlLightNsp])
+sio.on('[intersection]-change-mode', changeMode, controlLightNsp)
+sio.on('[intersection]-change-light', changeLight, controlLightNsp)
 
+def updateStateLight():
+    sio.emit('[intersection]-time-light', vals.timeLight, stateLightNsp)
+    sio.emit('[intersection]-light-state', vals.lightStatus, stateLightNsp)
 @sio.event
 def disconnect():
     print('disconnected from server')
-
-sio.connect(serverAddress, headers = headers )
-sio.wait()

@@ -4,9 +4,15 @@
 
 # - *- coding: utf- 8 - *-
 
-def initVals():
-    global mode, timeLight, lightStatus, nTrafficLights
-    mode = ''
-    timeLight = []
-    lightStatus = []
-    nTrafficLights = 0
+global mode, timeLight, timeRed, timeYellow, timeGreen, delta 
+global changeFlat, lightStatus, nTrafficLights
+
+mode = ''
+timeLight = []
+timeRed = 0
+timeYellow = 0
+timeGreen = 0
+delta = 0
+changeFlat = False
+lightStatus = []
+nTrafficLights = 0

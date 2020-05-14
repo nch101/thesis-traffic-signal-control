@@ -15,8 +15,8 @@ class getData:
         if (self.__res.status_code == 200):
             self.__modeControl = self.__res.json().get('modeControl')
             self.__trafficLights = self.__res.json().get('trafficLights')
-            self.__nTrafficLights = len(self.__trafficLights)
-                
+            self.__quantity = len(self.__trafficLights)
+            self.__delta = self.__res.json().get('delta')
 
     def timeRed(self):
         self.__timeRed = []
@@ -40,21 +40,26 @@ class getData:
         return self.__modeControl
 
     def nTrafficLights(self):
-        return self.__nTrafficLights
+        return self.__quantity
+
+    def deltaTime(self):
+        return self.__delta
 
 
-""" getDataURL = 'http://localhost:3000/intersection/get-data/'
-interID = '5e80b202ffd7df231c4f7926'
-accessToken = 'accessToken'
+# getDataURL = 'http://localhost:3000/api/intersection/'
+# interID = '5eb90fe69f1398273bba559a'
+# accessToken = 'accessToken'
 
-testData = getData(getDataURL, interID, accessToken)
+# testData = getData(getDataURL, interID, accessToken)
 
-print('****Testing****')
-testData.getData()
-print(testData.timeRed())
-print(testData.timeYellow())
-print(testData.timeGreen())
-print(testData.modeControl()) """
+# print('****Testing****')
+# testData.getData()
+# print(testData.timeRed())
+# print(testData.timeYellow())
+# print(testData.timeGreen())
+# print(testData.modeControl())
+# print(testData.nTrafficLights())
+# print(testData.deltaTime())
         
 
 

@@ -7,40 +7,31 @@
 import sys
 sys.path.append('/home/huy/Documents/py-project')
 import projectTS.vals as vals
-import os
-from dotenv import load_dotenv
-from projectTS.lib.getData import getData
-from projectTS.modeControl.automatic import initAutomatic, 
+from projectTS.initial import initAutomatic, initConfig
+from projectTS.modeControl.automatic import automatic 
 from projectTS.modeControl.manual import manual
 from projectTS.modeControl.emergency import emergency
 
-load_dotenv()
-getDataURL = os.getenv('GET_DATA_URL')
-interID = os.getenv('INTERSECTION_ID')
-token = os.getenv('ACCESS_TOKEN')
+def changeMode(data):
+    if (data == 'automatic'):
+        initConfig()
+        initAutomatic()
+    elif (data == 'manual'):
+        vals.mode = 'manual'
+    elif (data == 'emergency'):
+        vals.mode = 'emergency'
+    else:
+        pass
 
-intersection = getData(getDataURL, interID, token)
-
-def changeMode():
-    intersection.getData()
-    vals.mode = intersection.modeControl()
-    vals.nTrafficLights = intersection.nTrafficLights()
-    global timeRed = intersection.timeRed()
-    global timeYellow = intersection.timeYellow()
-    global timeGreen = intersection.timeGreen()
-    global delta = intersection
-    global priorityStreet = intersection
-
-    if (vals.mode == 'automatic'):
-        initAutomatic(timeRed, delta)
-    print('Mode control:', vals.mode)
+def changeLight():
+    vals.changeFlat = True
 
 def updateModeControl():
     if (vals.mode == 'automatic'):
-        automatic(timeRed, timeYellow, timeGreen)
+        automatic()
     elif (vals.mode == 'manual'):
-        manual(timeYellow)
+        manual()
     elif (vals.mode == 'emergency'):
-        emergency(priorityStreet)
+        emergency()
     else:
         pass
