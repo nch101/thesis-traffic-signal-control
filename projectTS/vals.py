@@ -5,7 +5,7 @@
 # - *- coding: utf- 8 - *-
 
 global mode, timeLight, timeRed, timeYellow, timeGreen, delta 
-global changeFlat, lightStatus, nTrafficLights
+global changeFlat, changeLight, lightStatus, nTrafficLights
 
 mode = ''
 timeLight = []
@@ -14,5 +14,6 @@ timeYellow = 0
 timeGreen = 0
 delta = 0
 changeFlat = False
+changeLight = False
 lightStatus = []
 nTrafficLights = 0

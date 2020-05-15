@@ -10,6 +10,7 @@ import socketio
 import sys
 sys.path.append('/home/huy/Documents/py-project')
 import projectTS.vals as vals
+from projectTS.initial import initAutomatic
 from projectTS.modeControl.updateMode import changeMode, changeLight
 
 load_dotenv()
@@ -41,4 +42,4 @@ def disconnect():
     print('disconnected from server')
     print('Change mode when connect lost')
     vals.mode = 'automatic'
-
+    initAutomatic()

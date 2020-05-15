@@ -46,3 +46,20 @@ def initAutomatic():
     print('Time light ')
     print(vals.timeLight)
     print('**************************')
+
+def initManual():
+    vals.lightStatus = []
+    vals.timeLight = []
+    for index in range(0, vals.nTrafficLights):
+        vals.timeLight.append(0)
+        if (index % 2):
+            vals.lightStatus.append('red')
+        else:
+            vals.lightStatus.append('green')
+    #debug vals
+    print('***** Init manual *****')
+    print('Light status ')
+    print(vals.lightStatus)
+    print('Time light ')
+    print(vals.timeLight)
+    print('**************************')
