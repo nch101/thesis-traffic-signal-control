@@ -18,7 +18,6 @@ def changeMode(data):
         initAutomatic()
         vals.mode = 'automatic'
     elif (data == 'manual'):
-        # initManual()
         vals.mode = 'manual'
     elif (data == 'emergency'):
         vals.mode = 'emergency'
@@ -29,6 +28,9 @@ def changeLight(data):
     print('Data received: ' + data)
     if (data == 'change-light'):
         vals.changeFlat = True
+
+# def updateModeOnServer():
+
 
 def updateModeControl():
     if (vals.mode == 'automatic'):

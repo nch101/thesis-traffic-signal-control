@@ -27,15 +27,9 @@ def connect():
     print('connection established')
 
 sio.connect(serverAddress, headers = headers, namespaces=[stateLightNsp, controlLightNsp])
+
 sio.on('[intersection]-change-mode', changeMode, controlLightNsp)
 sio.on('[intersection]-change-light', changeLight, controlLightNsp)
-
-def updateStateLight():
-    try:
-        sio.emit('[intersection]-time-light', vals.timeLight, stateLightNsp)
-        sio.emit('[intersection]-light-state', vals.lightStatus, stateLightNsp)
-    except:
-        print('xxx updateStateLight() was not executed xxx')
 
 @sio.event
 def disconnect():
@@ -43,3 +37,19 @@ def disconnect():
     print('Change mode when connect lost')
     vals.mode = 'automatic'
     initAutomatic()
+
+def updateStateLight():
+    try:
+        sio.emit('room', interID, stateLightNsp)
+        sio.emit('room', interID, controlLightNsp)
+        sio.emit('[intersection]-time-light', vals.timeLight, stateLightNsp)
+        sio.emit('[intersection]-light-state', vals.lightStatus, stateLightNsp)
+    except:
+        print('xxx updateStateLight() was not executed xxx')
+
+# def registerRoom():
+#     try:
+#         sio.emit('room', interID, stateLightNsp)
+#         sio.emit('room', interID, controlLightNsp)
+#     except:
+#         print('Error when register room')
