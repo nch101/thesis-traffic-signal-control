@@ -14,7 +14,7 @@ class showNumber:
         self.clock_pin = clock_pin
         self.latch_pin = latch_pin
 
-        GPIO.setmode(GPIO.BOARD)
+        GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.data_pin, GPIO.OUT)
         GPIO.setup(self.clock_pin, GPIO.OUT)
         GPIO.setup(self.latch_pin, GPIO.OUT)
@@ -32,23 +32,43 @@ class showNumber:
             '10110000', 
             '10011001',
             '10010010',
-            '10000011',
+            '10000010',
             '11111000',
             '10000000',
-            '10011000']
+            '10010000']
 
         unit = number % 10
         tens = int((number - unit) / 10)
 
-        self.__transmit(binLED[tens])
         self.__transmit(binLED[unit])
+        self.__transmit(binLED[tens])
 
     def __transmit(self, numLED):
-        GPIO.output(self.latch_pin, LOW)
+        GPIO.output(self.latch_pin, GPIO.LOW)
 
         for i in range(0, 8):
-            GPIO.output(self.clock_pin, LOW)
+            GPIO.output(self.clock_pin, GPIO.LOW)
             GPIO.output(self.data_pin, int(numLED[i]))
-            GPIO.output(self.clock_pin, HIGH)
+            GPIO.output(self.clock_pin, GPIO.HIGH)
         
-        GPIO.output(self.latch_pin, HIGH)
+        GPIO.output(self.latch_pin, GPIO.HIGH)
+        
+        
+#
+# Debug showNumber
+#
+#
+
+# data_pin = 22
+# clock_pin = 27
+# latch_pin = 17
+# test = showNumber(data_pin, clock_pin, latch_pin)
+
+# def main():
+#     for i in range(0, 100):
+#         test.showNumber(i)
+#         time.sleep(1)
+#     GPIO.cleanup()
+
+
+# main()
