@@ -11,7 +11,7 @@ class getData:
         pass
 
     def getData(self):
-        self.__res = requests.get(self.__requestURL, headers=self.__headers)
+        self.__res = requests.get(self.__requestURL, headers=self.__headers, verify = False)
         if (self.__res.status_code == 200):
             self.__modeControl = self.__res.json().get('modeControl')
             self.__trafficLights = self.__res.json().get('trafficLights')
