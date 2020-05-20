@@ -8,6 +8,7 @@ import sys
 sys.path.append('/home/huy/Documents/py-project')
 
 import time
+import RPi.GPIO as GPIO
 import projectTS.vals as vals
 from projectTS.socketIO.socket import *
 from projectTS.initial import initConfig, initAutomatic, initManual
@@ -45,17 +46,25 @@ def countDown():
             vals.changeLight = True
 
 def showLight():
-    numberLight1(vals.timeLight[0])
-    numberLight2(vals.timeLight[1])
+    numberLight1.showNumber(vals.timeLight[0])
+    numberLight2.showNumber(vals.timeLight[1])
 
-while True:
-    time.sleep(1)
-    updateModeControl()
-    countDown()
-    showLight()
-    updateStateLight()
-    print('******* DEBUG *******')
-    print('Mode control: ', vals.mode)
-    print('Light status: ', vals.lightStatus)
-    print('Time light: ', vals.timeLight)
-    print('********************')
+def main():
+    while True:
+        time.sleep(1)
+        updateModeControl()
+        countDown()
+        showLight()
+        updateStateLight()
+        print('******* DEBUG *******')
+        print('Mode control: ', vals.mode)
+        print('Light status: ', vals.lightStatus)
+        print('Time light: ', vals.timeLight)
+        print('********************')
+
+try:
+    main()
+except KeyboardInterrupt:
+    print('Keyboard interrupt')
+    GPIO.cleanup()
+    quit()
