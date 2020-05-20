@@ -15,14 +15,14 @@ from projectTS.modeControl.updateMode import updateModeControl
 from projectTS.socketIO.socket import updateStateLight
 from projectTS.lib.showNumber import showNumber
 
-data_pin1 = 22
-clock_pin1 = 27
-latch_pin1 = 17
+data_pin1 = 15
+clock_pin1 = 13
+latch_pin1 = 11
 numberLight1 = showNumber(data_pin1, clock_pin1, latch_pin1)
 
-data_pin2 = 5
-clock_pin2 = 6
-latch_pin2 = 13
+data_pin2 = 29
+clock_pin2 = 31
+latch_pin2 = 33
 numberLight2 = showNumber(data_pin2, clock_pin2, latch_pin2)
 
 initConfig()
