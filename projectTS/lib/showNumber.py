@@ -1,4 +1,5 @@
 import RPi.GPIO as GPIO
+import time 
 
 class showNumber:
     """
@@ -14,7 +15,8 @@ class showNumber:
         self.clock_pin = clock_pin
         self.latch_pin = latch_pin
 
-        GPIO.setmode(GPIO.BCM)
+        GPIO.setmode(GPIO.BOARD)
+        GPIO.setwarnings(False)
         GPIO.setup(self.data_pin, GPIO.OUT)
         GPIO.setup(self.clock_pin, GPIO.OUT)
         GPIO.setup(self.latch_pin, GPIO.OUT)
@@ -59,16 +61,16 @@ class showNumber:
 #
 #
 
-# data_pin = 22
-# clock_pin = 27
-# latch_pin = 17
+# data_pin = 15
+# clock_pin = 13
+# latch_pin = 11
 # test = showNumber(data_pin, clock_pin, latch_pin)
-
+# 
 # def main():
 #     for i in range(0, 100):
 #         test.showNumber(i)
 #         time.sleep(1)
 #     GPIO.cleanup()
-
-
+# 
+# 
 # main()
