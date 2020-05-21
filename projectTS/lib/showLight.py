@@ -6,7 +6,7 @@ class showLight():
         self.yellow_pin = yellow_pin
         self.green_pin = green_pin
 
-        GPIO.setmode(GPIO.BCM)
+        GPIO.setmode(GPIO.BOARD)
         GPIO.setup(self.red_pin, GPIO.OUT)
         GPIO.setup(self.yellow_pin, GPIO.OUT)
         GPIO.setup(self.green_pin, GPIO.OUT)
