@@ -27,15 +27,15 @@ clock_pin2 = 31
 latch_pin2 = 33
 numberLight2 = showNumber(data_pin2, clock_pin2, latch_pin2)
 
-red_pin1 = 36
-yellow_pin1 = 38
-green_pin1 = 40
-trafficLight1 = showLight(red_pin1, yellow_pin1, green_pin1)
-
-red_pin2 = 12
-yellow_pin2 = 16
-green_pin2 = 18
+red_pin2 = 36
+yellow_pin2 = 38
+green_pin2 = 40
 trafficLight2 = showLight(red_pin2, yellow_pin2, green_pin2)
+
+red_pin1 = 12
+yellow_pin1 = 16
+green_pin1 = 18
+trafficLight1 = showLight(red_pin1, yellow_pin1, green_pin1)
 
 initConfig()
 if (vals.mode == 'automatic'):
