@@ -15,11 +15,13 @@ class showLight():
         self.__turnoffAllLights()
         if (status == 'red'):
             GPIO.output(self.red_pin, GPIO.HIGH)
-        else if (status == 'yellow'):
+        elif (status == 'yellow'):
             GPIO.output(self.yellow_pin, GPIO.HIGH)
-        else if (status == 'green'):
+        elif (status == 'green'):
             GPIO.output(self.green_pin, GPIO.HIGH)
-    
+        else:
+            pass
+
     def __turnoffAllLights():
         GPIO.output(self.red_pin, GPIO.LOW)
         GPIO.output(self.yellow_pin, GPIO.LOW)
