@@ -10,11 +10,12 @@ sys.path.append('/home/huy/Documents/py-project')
 import time
 import RPi.GPIO as GPIO
 import projectTS.vals as vals
+from projectTS.lib.showNumber import showNumber
+from projectTS.lib.showLight import showLight
 from projectTS.socketIO.socket import *
 from projectTS.initial import initConfig, initAutomatic, initManual
 from projectTS.modeControl.updateMode import updateModeControl
 from projectTS.socketIO.socket import updateStateLight
-from projectTS.lib.showNumber import showNumber
 
 data_pin1 = 15
 clock_pin1 = 13
@@ -25,6 +26,16 @@ data_pin2 = 29
 clock_pin2 = 31
 latch_pin2 = 33
 numberLight2 = showNumber(data_pin2, clock_pin2, latch_pin2)
+
+red_pin1 = 36
+yellow_pin1 = 38
+green_pin1 = 40
+trafficLight1 = showLight(red_pin1, yellow_pin1, green_pin1)
+
+red_pin2 = 12
+yellow_pin2 = 16
+green_pin2 = 18
+trafficLight2 = showLight(red_pin2, yellow_pin2, green_pin2)
 
 initConfig()
 if (vals.mode == 'automatic'):
@@ -48,6 +59,8 @@ def countDown():
 def showLight():
     numberLight1.showNumber(vals.timeLight[0])
     numberLight2.showNumber(vals.timeLight[1])
+    trafficLight1.showLight(vals.lightStatus[0])
+    trafficLight2.showLight(vals.lightStatus[1])
 
 def main():
     while True:
@@ -66,5 +79,6 @@ try:
     main()
 except KeyboardInterrupt:
     print('Keyboard interrupt')
+finally:
     GPIO.cleanup()
     quit()
