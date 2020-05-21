@@ -79,6 +79,5 @@ try:
     main()
 except KeyboardInterrupt:
     print('Keyboard interrupt')
-finally:
     GPIO.cleanup()
     quit()
