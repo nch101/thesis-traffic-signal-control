@@ -22,7 +22,7 @@ class showLight():
         else:
             pass
 
-    def __turnoffAllLights():
+    def __turnoffAllLights(self):
         GPIO.output(self.red_pin, GPIO.LOW)
         GPIO.output(self.yellow_pin, GPIO.LOW)
         GPIO.output(self.green_pin, GPIO.LOW)
