@@ -6,9 +6,10 @@
 
 import sys
 sys.path.append('/home/huy/Documents/py-project')
+import logging
 import projectTS.vals as vals
 
-def emergency(priorityStreet):
-    for index in range(0, vals.nTrafficLights):
-        vals.timeTraffic[index] = 0
-        vals.lightStatus[index] = priorityStreet[index]
+def emergency():
+    for i in range(0, vals.nTrafficLights):
+        if ((vals.lightStatus[i] == 'yellow') and (vals.timeLight[i] == 0)):
+            vals.lightStatus[i] = 'red'
