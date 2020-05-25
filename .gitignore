@@ -1,4 +1,6 @@
 .env
+*log
+projectTS/test.py
 tests/__pycache__/
 projectTS/__pycache__/
 projectTS/lib/__pycache__/
