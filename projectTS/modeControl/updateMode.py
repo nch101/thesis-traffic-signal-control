@@ -4,8 +4,6 @@
 
 # - *- coding: utf- 8 - *-
 
-import sys
-sys.path.append('/home/huy/Documents/py-project')
 import logging
 import projectTS.vals as vals
 from projectTS.initial import initConfig, initAutomatic, initManual, initEmergency

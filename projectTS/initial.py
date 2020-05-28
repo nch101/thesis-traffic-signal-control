@@ -1,5 +1,3 @@
-import sys
-sys.path.append('/home/huy/Documents/py-project')
 import os
 import logging
 import urllib3

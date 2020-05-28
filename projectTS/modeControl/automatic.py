@@ -4,8 +4,6 @@
 
 # - *- coding: utf- 8 - *-
 
-import sys
-sys.path.append('/home/huy/Documents/py-project')
 import projectTS.vals as vals
 
 def automatic():

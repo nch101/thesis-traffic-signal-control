@@ -8,8 +8,6 @@ from dotenv import load_dotenv
 import os
 import socketio
 import logging
-import sys
-sys.path.append('/home/huy/Documents/py-project')
 import projectTS.vals as vals
 from projectTS.initial import initAutomatic
 from projectTS.modeControl.updateMode import changeMode, changeLight
