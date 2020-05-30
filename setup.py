@@ -9,7 +9,7 @@ config = [
     'git repository': 'https://github.com/nch101/py-project.git',
     'author_email': 'huynguyencong98@gmail.com',
     'version': '0.1',
-    'install_requires': ['nose', 'python-socketio', 'python-dotenv', 'urllib3[secure]'],
+    'install_requires': ['nose', 'python-socketio', 'urllib3[secure]', 'python-opencv'],
     'packages': ['traffic-light'],
     'scripts': [],
     'name': 'py-project'
