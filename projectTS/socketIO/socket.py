@@ -3,23 +3,31 @@
 # *****************************
 
 # - *- coding: utf- 8 - *-
-
-from dotenv import load_dotenv
-import os
-import socketio
 import logging
+import configparser
+
+import socketio
 import projectTS.vals as vals
 from projectTS.initial import initAutomatic
 from projectTS.modeControl.updateMode import changeMode, changeLight
 
 logger = logging.getLogger('projectTS.socketIO.socket')
 
-load_dotenv()
-serverAddress = os.getenv('SERVER_ADDRESS')
-interID = os.getenv('INTERSECTION_ID')
+config = configparser.ConfigParser()
+config.read('config.ini')
+
+defaultConf = config['DEFAULT']
+interID = defaultConf['intersection_id']
+stateLightNsp = defaultConf['stateLightNsp']
+controlLightNsp = defaultConf['controlLightNsp']
+cameraNsp = defaultConf['cameraNsp']
+
+dorm = config['DORM']
+serverAddress = dorm['server']
+# smartphone = config['SMARTPHONE']
+# serverAddress = smartphone['server']
+
 headers = { 'intersectionId': interID }
-stateLightNsp = '/socket/state-light'
-controlLightNsp = '/socket/control-light'
 
 sio = socketio.Client(ssl_verify=False)
 
@@ -27,8 +35,7 @@ sio = socketio.Client(ssl_verify=False)
 def connect():
     logger.info('Connection socket established')
 
-sio.connect(serverAddress, headers = headers, namespaces=[stateLightNsp, controlLightNsp])
-
+sio.connect(serverAddress, headers = headers, namespaces=[stateLightNsp, controlLightNsp, cameraNsp])
 
 sio.emit('room', interID, controlLightNsp)
 sio.on('[intersection]-change-mode', changeMode, controlLightNsp)
@@ -59,3 +66,9 @@ def updateStateLight():
         sio.emit('[intersection]-light-state', lightData, stateLightNsp)
     except:
         logger.warning('Connect socket lost')
+
+def transmitImages(frames):
+    try:
+        sio.emit('[intersection]-camera', frames, cameraNsp)
+    except:
+        logger.warning('Cannot transmit frames to server')

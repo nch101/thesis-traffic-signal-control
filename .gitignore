@@ -1,8 +1,10 @@
-.env
 *log
+config.ini
+
 projectTS/test.py
 tests/__pycache__/
 projectTS/__pycache__/
+projectTS/imagesProcessing/__pycache__
 projectTS/lib/__pycache__/
 projectTS/modeControl/__pycache__/
 projectTS/socketIO/__pycache__/

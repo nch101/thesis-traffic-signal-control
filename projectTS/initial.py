@@ -1,16 +1,21 @@
-import os
+import configparser
 import logging
 import urllib3
-from dotenv import load_dotenv
+
 import projectTS.vals as vals
 from projectTS.lib.getData import getData
 
 logger = logging.getLogger('projectTS.initial')
 
-load_dotenv()
-getDataURL = os.getenv('GET_DATA_URL')
-interID = os.getenv('INTERSECTION_ID')
-token = os.getenv('ACCESS_TOKEN')
+config = configparser.ConfigParser()
+config.read('config.ini')
+
+dormConf = config['DORM']
+getDataURL = dormConf['getData']
+
+defaultConf = config['DEFAULT']
+interID = defaultConf['intersection_id']
+token = defaultConf['access_token']
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 intersection = getData(getDataURL, interID, token)
