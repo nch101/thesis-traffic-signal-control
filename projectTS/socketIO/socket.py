@@ -50,7 +50,7 @@ def disconnect():
 
 def updateStateLight():
     try:
-        sio.emit('room', interID, stateLightNsp)
+        # sio.emit('room', interID, stateLightNsp)
         timeData = {
             'room': interID, 
             'data': vals.timeLight
@@ -69,6 +69,10 @@ def updateStateLight():
 
 def transmitImages(frames):
     try:
-        sio.emit('[intersection]-camera', frames, cameraNsp)
+        framesData = {
+            'room': interID,
+            'data': frames
+        }
+        sio.emit('[intersection]-camera', framesData, cameraNsp)
     except:
         logger.warning('Cannot transmit frames to server')
