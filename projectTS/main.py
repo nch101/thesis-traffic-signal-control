@@ -10,7 +10,9 @@ sys.path.append(projectPath)
 
 import logging
 import logging.config
-logging.config.fileConfig(projectPath + '/projectTS/logging.conf', defaults={'logfilename': projectPath + '/projectTS/logs/app.log'})
+logging.config.fileConfig(projectPath + '/projectTS/logging.conf', 
+                    defaults={'logfilename': projectPath + '/projectTS/logs/app.log', 
+                            'logerrorname': projectPath + '/projectTS/logs/error.log'})
 import configparser
 import time
 import threading
@@ -80,11 +82,9 @@ def onControlAndDisplay(stop_event):
         time.sleep(1)
         countDown()
 
-        print('********* DEBUG *********')
-        print('Mode control: ', vals.mode)
-        print('Light status: ', vals.lightStatus)
-        print('Time light: ', vals.timeLight)
-        print('*************************')
+        logger.debug('Mode control: %s', vals.mode)
+        logger.debug('Light status: %s', vals.lightStatus)
+        logger.debug('Time light: %s', vals.timeLight)
 
 try:
     thread1 = threading.Thread(target=onControlAndDisplay, args=(stopThread, ))
@@ -102,3 +102,5 @@ except KeyboardInterrupt:
     stopThread.set()
     # GPIO.cleanup()
     quit()
+except Exception:
+    logger.error('Something is wrong: ', exc_info=True)

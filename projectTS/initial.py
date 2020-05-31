@@ -29,16 +29,13 @@ def initConfig():
     vals.timeGreen = intersection.timeGreen
     vals.delta = intersection.deltaTime
 
-    print('******* Init config *******')
-    print('Mode: ', vals.mode)
-    print('Number of traffic lights: ', vals.nTrafficLights)
-    print('Time red: ', vals.timeRed)
-    print('Time yellow: ', vals.timeYellow)
-    print('Time green: ', vals.timeGreen)
-    print('Time delta: ', vals.delta)
-    print('***************************')
-
     logger.info('Initial config')
+    logger.info('Mode: %s', vals.mode)
+    logger.info('Number of traffic lights: %s', vals.nTrafficLights)
+    logger.info('Time red: %s', vals.timeRed)
+    logger.info('Time yellow: %s', vals.timeYellow)
+    logger.info('Time green: %s', vals.timeGreen)
+    logger.info('Time delta: %s', vals.delta)
 
 def initAutomatic():
     vals.lightStatus = []
@@ -49,11 +46,6 @@ def initAutomatic():
             vals.timeLight.append(vals.timeRed[index])
         else:
             vals.timeLight.append(vals.delta)
-    #debug vals
-    print('***** Init automatic *****')
-    print('Light status ', vals.lightStatus)
-    print('Time light ', vals.timeLight)
-    print('**************************')
 
     logger.info('Init automatic')
     logger.info('Light status: %s', vals.lightStatus)
@@ -68,11 +60,6 @@ def initManual():
             vals.lightStatus.append('red')
         else:
             vals.lightStatus.append('green')
-    #debug vals
-    print('***** Init manual *****')
-    print('Light status ', vals.lightStatus)
-    print('Time light ', vals.timeLight)
-    print('**************************')
 
     logger.info('Init manual')
     logger.info('Light status: %s', vals.lightStatus)
@@ -90,11 +77,6 @@ def initEmergency():
         else:
             vals.lightStatus.append('yellow')
             vals.timeLight.append(8)
-
-    print('***** Init emergency *****')
-    print('Light status ', vals.lightStatus)
-    print('Time light ', vals.timeLight)
-    print('**************************')
 
     logger.info('Init emergency')
     logger.info('Light status: %s', vals.lightStatus)
