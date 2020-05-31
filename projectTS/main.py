@@ -29,6 +29,8 @@ logger = logging.getLogger('projectTS.main')
 config = configparser.ConfigParser()
 config.read('config.ini')
 
+stopThread = threading.Event()
+
 # street1Conf = config['STREET-1']
 # numberLight1 = showNumber(int(street1Conf['data_pin']), 
 #                         int(street1Conf['clock_pin']), 
@@ -61,7 +63,7 @@ def countDown():
         if ((vals.timeLight[i] == 0) and (vals.lightStatus[i] == 'yellow') and (vals.mode == 'manual')):
             vals.changeLight = True
 
-def onControlAndDisplay():
+def onControlAndDisplay(stop_event):
     logger.info('onControlAndDisplay is running...')
     initConfig()
     if (vals.mode == 'automatic'):
@@ -71,7 +73,7 @@ def onControlAndDisplay():
     else:
         pass
     
-    while True:
+    while not stop_event.wait(0):
         updateStateLight()
         # showLight()
         updateModeControl()
@@ -85,16 +87,18 @@ def onControlAndDisplay():
         print('*************************')
 
 try:
-    thread1 = threading.Thread(target=onControlAndDisplay)
-    thread2 = threading.Thread(target=onImagesProcessStreet1)
+    thread1 = threading.Thread(target=onControlAndDisplay, args=(stopThread, ))
+    thread2 = threading.Thread(target=onImagesProcessStreet1, args=(stopThread, ))
     
-    thread2.start()
     thread1.start()
+    thread2.start()
 
-    thread2.join()
     thread1.join()
+    thread2.join()
+
 except KeyboardInterrupt:
     print('Keyboard interrupt')
     logger.info('Keyboard interrupt')
+    stopThread.set()
     # GPIO.cleanup()
     quit()

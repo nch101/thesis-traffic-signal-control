@@ -20,11 +20,11 @@ config.read('config.ini')
 street1Conf = config['STREET-1']
 cameraURL = street1Conf['camera']
 
-def onImagesProcessStreet1():
+def onImagesProcessStreet1(stop_event):
     logger.info('onImagesProcessStreet1 is running...')
     cap = cv2.VideoCapture(cameraURL, cv2.CAP_FFMPEG)
     ret, frame = cap.read()
-    while ret:
+    while not stop_event.wait(0):
         frame = cv2.resize(frame, (711, 400))
         buffer = cv2.imencode('.jpg', frame)
         frameEncode = base64.b64encode(buffer[1])

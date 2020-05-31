@@ -1,6 +1,6 @@
-*log
-config.ini
+*.log
 *.pyc
+config.ini
 projectTS/test.py
 tests/__pycache__/
 projectTS/__pycache__/
