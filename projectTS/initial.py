@@ -81,3 +81,7 @@ def initEmergency():
     logger.info('Init emergency')
     logger.info('Light status: %s', vals.lightStatus)
     logger.info('Time light: %s', vals.timeLight)
+
+def checkModeControl():
+    intersection.getData()
+    vals.mode = intersection.modeControl

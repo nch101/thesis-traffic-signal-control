@@ -12,7 +12,7 @@ import logging
 import logging.config
 logging.config.fileConfig(projectPath + '/projectTS/logging.conf', 
                     defaults={'logfilename': projectPath + '/projectTS/logs/app.log', 
-                            'logerrorname': projectPath + '/projectTS/logs/error.log'})
+                            'logwarnname': projectPath + '/projectTS/logs/warn.log'})
 import configparser
 import time
 import threading
@@ -102,5 +102,5 @@ except KeyboardInterrupt:
     stopThread.set()
     # GPIO.cleanup()
     quit()
-except Exception:
-    logger.error('Something is wrong: ', exc_info=True)
+except Exception as e:
+    logger.error('Something is wrong: %s', e)
