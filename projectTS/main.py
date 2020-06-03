@@ -76,8 +76,8 @@ def onControlAndDisplay(stop_event):
         pass
     
     while not stop_event.wait(0):
-        updateModeControl()
         updateStateLight()
+        updateModeControl()
         # showLight()
         time.sleep(1)
         countDown()
