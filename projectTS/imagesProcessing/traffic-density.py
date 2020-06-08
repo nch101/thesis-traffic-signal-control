@@ -30,12 +30,13 @@ xEnd = 1070
 def main():
     # cap = cv2.VideoCapture(cameraURL, cv2.CAP_FFMPEG)
     # ret, frame = cap.read()
-    camerasArray = ['images/demo2.png', 'images/demo5.png']
+    camerasArray = ['images/demo1.png', 'images/demo5.png']
     start_time = time.time()
     img1 = blockImage(camerasArray[0], yBegin, yEnd, xBegin, xEnd)
     img2 = blockImage(camerasArray[1], yBegin, yEnd, xBegin, xEnd)
-    print(densityAnalysis(img1, img2))
-
+    nBlock, ndBlock = densityAnalysis(img1, img2)
+    print(nBlock, ndBlock)
+    print('Ti le ', ((ndBlock/nBlock)*100))
     print("--- %s seconds ---" % (time.time() - start_time))
     while True:
         if cv2.waitKey(20) == 27:

@@ -6,7 +6,7 @@ class getData:
     using getDataURL interID and access-token, 
     """
     def __init__(self, getDataURL, interID, accessToken):
-        self.__headers = {'access-token': accessToken}
+        self.__headers = { 'access-token': accessToken }
         self.__requestURL = getDataURL + interID
         pass
 
