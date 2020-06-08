@@ -11,7 +11,6 @@ os.environ["OPENCV_FFMPEG_CAPTURE_OPTIONS"] = "rtsp_transport;udp"
 import cv2
 import numpy as np
 import time
-# import matplotlib.pyplot as plt
 
 # config = configparser.ConfigParser()
 # config.read('config.ini')
@@ -22,20 +21,19 @@ import time
 # cameraURL = 'rtsp://admin:test12345@192.168.100.14:554/onvif1'
 
 pixel = 20
-yBegin = 235
-yEnd = 675
+yBegin = 260
+yEnd = 570
 
-xBegin = 400
-xEnd = 1040
+xBegin = 690
+xEnd = 1070
 
 def main():
     # cap = cv2.VideoCapture(cameraURL, cv2.CAP_FFMPEG)
     # ret, frame = cap.read()
-    camerasArray = ['images/image5.png', 'images/image1.png']
+    camerasArray = ['images/demo2.png', 'images/demo5.png']
     start_time = time.time()
     img1 = blockImage(camerasArray[0], yBegin, yEnd, xBegin, xEnd)
     img2 = blockImage(camerasArray[1], yBegin, yEnd, xBegin, xEnd)
-
     print(densityAnalysis(img1, img2))
 
     print("--- %s seconds ---" % (time.time() - start_time))
