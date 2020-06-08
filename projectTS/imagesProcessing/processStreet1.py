@@ -31,4 +31,4 @@ def onImagesProcessStreet1(stop_event):
         frameText = frameEncode.decode('utf-8')
         transmitImages(frameText)
         ret, frame = cap.read()
-        time.sleep(0.04)
+        # time.sleep(0.04)
