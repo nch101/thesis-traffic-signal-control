@@ -23,7 +23,7 @@ import projectTS.vals as vals
 # from projectTS.lib.showLight import showLight
 from projectTS.socketIO.socket import *
 from projectTS.initial import initConfig, initAutomatic, initManual
-from projectTS.imagesProcessing.processStreet1 import onImagesProcessStreet1
+from projectTS.imagesProcessing.streamStreet import onStreamStreet
 from projectTS.modeControl.updateMode import updateModeControl
 from projectTS.socketIO.socket import updateStateLight
 
@@ -88,7 +88,7 @@ def onControlAndDisplay(stop_event):
 
 try:
     thread1 = threading.Thread(target=onControlAndDisplay, args=(stopThread, ))
-    thread2 = threading.Thread(target=onImagesProcessStreet1, args=(stopThread, ))
+    thread2 = threading.Thread(target=onStreamStreet, args=(stopThread, ))
     
     thread1.start()
     thread2.start()

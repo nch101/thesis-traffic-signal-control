@@ -10,8 +10,11 @@ logger = logging.getLogger('projectTS.initial')
 config = configparser.ConfigParser()
 config.read('config.ini')
 
-dormConf = config['DORM']
-getDataURL = dormConf['getData']
+# dormConf = config['DORM']
+# getDataURL = dormConf['getData']
+
+testConf = config['TEST']
+getDataURL = testConf['getData']
 
 defaultConf = config['DEFAULT']
 interID = defaultConf['intersection_id']

@@ -23,10 +23,12 @@ stateLightNsp = defaultConf['stateLightNsp']
 controlLightNsp = defaultConf['controlLightNsp']
 cameraNsp = defaultConf['cameraNsp']
 
-dorm = config['DORM']
-serverAddress = dorm['server']
+# dorm = config['DORM']
+# serverAddress = dorm['server']
 # smartphone = config['SMARTPHONE']
 # serverAddress = smartphone['server']
+test = config['TEST']
+serverAddress = test['server']
 
 isConnectLost = False
 def subscribeIntersection():

@@ -13,10 +13,9 @@ class timeDecision:
         self.deltaGrayLevel = deltaGrayLevel
         self.timeToCapture = timeToCapture
 
-        # self.__cap = cv2.VideoCapture(cameraIp)
-
     def captureVideo(self):
-        cap = cv2.VideoCapture(self.cameraIp)
+        cap = cv2.VideoCapture(self.cameraIp, cv2.CAP_FFMPEG)
+        # cap = cv2.VideoCapture(self.cameraIp)
         ret, frame = cap.read()
         cap.release()
         cv2.destroyAllWindows()
@@ -48,9 +47,9 @@ class timeDecision:
                     ndBlock += 1
                     blackImage[i:i+self.pixelBlock, j:j+self.pixelBlock] = 255
         
-        cv2.imwrite('image-temp/image1.png', image1)
-        cv2.imwrite('image-temp/image2.png', image2)
-        cv2.imwrite('image-temp/black-image.png', blackImage)
+        cv2.imwrite('image-temp/image1' + time.ctime(time.time()) + '.png', image1)
+        cv2.imwrite('image-temp/image2' + time.ctime(time.time()) + '.png', image2)
+        cv2.imwrite('image-temp/black-image' + time.ctime(time.time()) + '.png', blackImage)
         return nBlock, ndBlock, blackImage
 
     def __trafficDensityAnalysis(self):
@@ -120,5 +119,5 @@ class timeDecision:
         return int(timeGreen)
 
 # # Test timeDecision
-# abc = timeDecision(0, 0, 480, 0, 640, 50, 50, 5)
-# print('TimeGreen', abc.timeGreen())
+abc = timeDecision(0, 0, 480, 0, 640, 50, 50, 5)
+print('TimeGreen', abc.timeGreen())
