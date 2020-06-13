@@ -79,7 +79,7 @@ def densityAnalysis(image1, image2, deltaGrayLevel=40):
 
 def trafficDensityAnalysis(rate):
     if (rate >= 0 and rate < 0.2):
-        u1 = -20/3*rate + 1
+        u1 = -5*rate + 1
         trafficState1 = 'rv'
     elif (rate >= 0.3 and rate < 0.5):
         u1 = 5*rate - 3/2
