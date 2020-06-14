@@ -1,3 +1,6 @@
+import os
+os.environ["OPENCV_FFMPEG_CAPTURE_OPTIONS"] = "rtsp_transport;udp"
+
 import cv2
 import numpy as np
 import time
@@ -33,6 +36,7 @@ class timeDecision:
     def onSubBlockGrayImage(self):
         nBlock = 0
         ndBlock = 0
+        time.sleep(self.timeToCapture)
         image1 = self.grayImageToBlockGrayImage()
         time.sleep(self.timeToCapture)
         image2 = self.grayImageToBlockGrayImage()
@@ -118,6 +122,6 @@ class timeDecision:
         
         return int(timeGreen)
 
-# # Test timeDecision
-abc = timeDecision(0, 0, 480, 0, 640, 50, 50, 5)
-print('TimeGreen', abc.timeGreen())
+# # # Test timeDecision
+# abc = timeDecision('rtsp://admin:test12345@192.168.100.15:554/onvif1', 0, 720, 0, 1280, 10, 50, 5)
+# print('TimeGreen', abc.timeGreen())

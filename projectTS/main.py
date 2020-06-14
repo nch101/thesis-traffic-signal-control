@@ -24,6 +24,7 @@ import projectTS.vals as vals
 from projectTS.socketIO.socket import *
 from projectTS.initial import initConfig, initAutomatic, initManual
 from projectTS.imagesProcessing.streamStreet import onStreamStreet
+from projectTS.imagesProcessing.trafficDensityAnalysis import trafficDensityAnalysis
 from projectTS.modeControl.updateMode import updateModeControl
 from projectTS.socketIO.socket import updateStateLight
 
@@ -68,13 +69,14 @@ def countDown():
 def onControlAndDisplay(stop_event):
     logger.info('onControlAndDisplay is running...')
     initConfig()
-    if (vals.mode == 'automatic'):
+    if (vals.mode == 'automatic-fixed-time' or vals.mode == 'automatic-flexible-time'):
         initAutomatic()
     elif (vals.mode == 'manual'):
         initManual()
     else:
         pass
-    
+
+    thread3.start()
     while not stop_event.wait(0):
         updateStateLight()
         updateModeControl()
@@ -88,13 +90,15 @@ def onControlAndDisplay(stop_event):
 
 try:
     thread1 = threading.Thread(target=onControlAndDisplay, args=(stopThread, ))
-    thread2 = threading.Thread(target=onStreamStreet, args=(stopThread, ))
-    
+    # thread2 = threading.Thread(target=onStreamStreet, args=(stopThread, ))
+    thread3 = threading.Thread(target=trafficDensityAnalysis, args=(stopThread, ))
+
     thread1.start()
-    thread2.start()
+    # thread2.start()
 
     thread1.join()
-    thread2.join()
+    # thread2.join()
+    thread3.join()
 
 except KeyboardInterrupt:
     print('Keyboard interrupt')

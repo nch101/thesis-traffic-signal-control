@@ -7,17 +7,24 @@
 import logging
 import projectTS.vals as vals
 from projectTS.initial import initConfig, initAutomatic, initManual, initEmergency
-from projectTS.modeControl.automatic import automatic 
+from projectTS.modeControl.automaticFixedTime import automaticFixedTime
+from projectTS.modeControl.automaticFlexibleTime import automaticFlexibleTime
 from projectTS.modeControl.manual import manual
 from projectTS.modeControl.emergency import emergency
 
 logger = logging.getLogger('projectTS.modeControl.updateMode')
 
 def changeMode(data):
-    if (data == 'automatic'):
+    if (data == 'automatic-fixed-time'):
         initConfig()
         initAutomatic()
-        vals.mode = 'automatic'
+        vals.mode = 'automatic-fixed-time'
+        logger.info('Updated mode control: %s', vals.mode)
+    elif (data == 'automatic-flexible-time'):
+        initConfig()
+        initAutomatic()
+        vals.updateTimeFlag = True
+        vals.mode = 'automatic-flexible-time'
         logger.info('Updated mode control: %s', vals.mode)
     elif (data == 'manual'):
         vals.mode = 'manual'
@@ -32,14 +39,16 @@ def changeMode(data):
 def changeLight(data):
     logger.info('Change light')
     if (data == 'change-light'):
-        vals.changeFlat = True
+        vals.changeFlag = True
 
 # def updateModeOnServer():
 
 
 def updateModeControl():
-    if (vals.mode == 'automatic'):
-        automatic()
+    if (vals.mode == 'automatic-fixed-time'):
+        automaticFixedTime()
+    elif (vals.mode == 'automatic-flexible-time'):
+        automaticFlexibleTime()
     elif (vals.mode == 'manual'):
         manual()
     elif (vals.mode == 'emergency'):

@@ -4,17 +4,19 @@
 
 # - *- coding: utf- 8 - *-
 
-global mode, timeLight, timeRed, timeYellow, timeGreen, delta 
-global changeFlat, changeLight, lightStatus, nTrafficLights, priorityStreet
+global mode, timeRed, timeYellow, timeGreen, delta, nTrafficLights
+global lightStatus, priorityStreet, timeLight, timeGreenFlexible
+global changeFlag, changeLight
 
 mode = ''
-timeLight = []
 timeRed = 0
 timeYellow = 0
 timeGreen = 0
 delta = 0
-changeFlat = False
-changeLight = False
-lightStatus = []
 nTrafficLights = 0
+lightStatus = []
 priorityStreet = []
+timeLight = []
+timeGreenFlexible = 0
+changeFlag = False
+changeLight = False

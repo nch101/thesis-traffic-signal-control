@@ -12,10 +12,10 @@ def manual():
             vals.lightStatus[index] = 'green'
         elif ((vals.lightStatus[index] == 'yellow') and (vals.timeLight[index] == 0)):
             vals.lightStatus[index] = 'red'
-        elif ((vals.lightStatus[index] == 'green') and (vals.changeFlat)):
+        elif ((vals.lightStatus[index] == 'green') and (vals.changeFlag)):
             vals.lightStatus[index] = 'yellow'
             vals.timeLight[index] = vals.timeYellow[index]
         else:
             pass
     vals.changeLight = False
-    vals.changeFlat = False
+    vals.changeFlag = False
