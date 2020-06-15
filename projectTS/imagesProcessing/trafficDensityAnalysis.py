@@ -36,13 +36,17 @@ pixelBlock1 = int(street1Conf['pixelBlock'])
 default = config['DEFAULT']
 deltaGray = int(default['deltaGray'])
 timeToCapture = int(default['timeToCapture'])
+isWriteImage = default['isWriteImage'].lower() in ['true', '1']
 pathToStoreImg = default['pathToStoreImage']
+
+print(isWriteImage)
+print(type(isWriteImage))
 
 def trafficDensityAnalysis(stop_event):
     logger.info('traffic density analysis is running...')
     street1 = timeDecision(cameraURL, xBegin1, xEnd1, yBegin1, yEnd1, 
     pixelBlock1, deltaGray, timeToCapture, 
-    isWriteImage=True, pathToStoreImg=pathToStoreImg)
+    isWriteImage=isWriteImage, pathToStoreImg=pathToStoreImg)
     isBegin = True
     while not stop_event.wait(0):
         if ((vals.lightStatus[street.street1.value] == 'yellow') and \
