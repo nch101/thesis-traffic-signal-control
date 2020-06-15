@@ -60,7 +60,7 @@ def showLight():
 
 def countDown():
     for i in range(0, vals.nTrafficLights):
-        if (vals.timeLight[i] > 0):
+        if (vals.timeLight[i] >= 0):
             vals.timeLight[i] -= 1
 
         if ((vals.timeLight[i] == 0) and (vals.lightStatus[i] == 'yellow') and (vals.mode == 'manual')):
@@ -78,26 +78,25 @@ def onControlAndDisplay(stop_event):
 
     thread3.start()
     while not stop_event.wait(0):
-        updateStateLight()
         updateModeControl()
+        logger.debug('Mode control: %s', vals.mode)
+        logger.debug('Light status: %s', vals.lightStatus)
+        logger.debug('Time light: %s', vals.timeLight)
+        updateStateLight()
         # showLight()
         time.sleep(1)
         countDown()
 
-        logger.debug('Mode control: %s', vals.mode)
-        logger.debug('Light status: %s', vals.lightStatus)
-        logger.debug('Time light: %s', vals.timeLight)
-
 try:
     thread1 = threading.Thread(target=onControlAndDisplay, args=(stopThread, ))
-    # thread2 = threading.Thread(target=onStreamStreet, args=(stopThread, ))
+    thread2 = threading.Thread(target=onStreamStreet, args=(stopThread, ))
     thread3 = threading.Thread(target=trafficDensityAnalysis, args=(stopThread, ))
 
     thread1.start()
-    # thread2.start()
+    thread2.start()
 
     thread1.join()
-    # thread2.join()
+    thread2.join()
     thread3.join()
 
 except KeyboardInterrupt:

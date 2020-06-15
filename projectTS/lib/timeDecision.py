@@ -1,12 +1,17 @@
 import os
 os.environ["OPENCV_FFMPEG_CAPTURE_OPTIONS"] = "rtsp_transport;udp"
+import logging
 
 import cv2
 import numpy as np
 import time
 
+logger = logging.getLogger('projectTS.lib.timeDesition')
+
 class timeDecision:
-    def __init__(self, cameraIp, xBegin, xEnd, yBegin, yEnd, pixelBlock, deltaGrayLevel, timeToCapture):
+    def __init__(self, cameraIp, xBegin, xEnd, yBegin, yEnd, 
+    pixelBlock, deltaGrayLevel, timeToCapture, 
+    isWriteImage=False, pathToStoreImg=''):
         self.cameraIp = cameraIp
         self.xBegin = xBegin
         self.xEnd = xEnd
@@ -15,6 +20,8 @@ class timeDecision:
         self.pixelBlock = pixelBlock
         self.deltaGrayLevel = deltaGrayLevel
         self.timeToCapture = timeToCapture
+        self.isWriteImage = isWriteImage
+        self.pathToStoreImg = pathToStoreImg
 
     def captureVideo(self):
         cap = cv2.VideoCapture(self.cameraIp, cv2.CAP_FFMPEG)
@@ -50,45 +57,46 @@ class timeDecision:
                 if (deltaGray >= self.deltaGrayLevel and deltaGray <= (255-self.deltaGrayLevel)):
                     ndBlock += 1
                     blackImage[i:i+self.pixelBlock, j:j+self.pixelBlock] = 255
-        
-        cv2.imwrite('image-temp/image1' + time.ctime(time.time()) + '.png', image1)
-        cv2.imwrite('image-temp/image2' + time.ctime(time.time()) + '.png', image2)
-        cv2.imwrite('image-temp/black-image' + time.ctime(time.time()) + '.png', blackImage)
-        return nBlock, ndBlock, blackImage
+        if (self.isWriteImage):
+            cv2.imwrite(self.pathToStoreImg + 'image1' + time.ctime(time.time()) + '.png', image1)
+            cv2.imwrite(self.pathToStoreImg + 'image2' + time.ctime(time.time()) + '.png', image2)
+            cv2.imwrite(self.pathToStoreImg + 'black-image' + time.ctime(time.time()) + '.png', blackImage)
+
+        logger.info('ndBlock: %s, nBlock: %s, rate: %s', ndBlock, nBlock, ndBlock/nBlock*100)
+        return nBlock, ndBlock
 
     def __trafficDensityAnalysis(self):
-        nBlock, ndBlock, blackImage = self.onSubBlockGrayImage()
-        print(nBlock, ndBlock)
+        nBlock, ndBlock = self.onSubBlockGrayImage()
         rate = ndBlock/nBlock
 
         if (rate >= 0 and rate < 0.2):
             u1 = -5*rate + 1
-            trafficState1 = 'rv'
+            trafficState1 = 'very-low'
         elif (rate >= 0.3 and rate < 0.5):
             u1 = 5*rate - 3/2
-            trafficState1 = 'tb'
+            trafficState1 = 'medium'
         elif (rate >= 0.5 and rate < 0.7):
             u1 = -5*rate + 7/2
-            trafficState1 = 'tb'
+            trafficState1 = 'medium'
         elif (rate >= 0.8 and rate <= 1):
             u1 = 5*rate -4
-            trafficState1 = 'rd'
+            trafficState1 = 'very-high'
         else:
             u1 = 0
             trafficState1 = None
 
         if (rate >= 0.1 and rate < 0.25):
             u2 = 20/3*rate - 2/3
-            trafficState2 = 'v'
+            trafficState2 = 'low'
         elif (rate >= 0.25 and rate < 0.4):
             u2 = -20/3*rate + 8/3
-            trafficState2 = 'v'
+            trafficState2 = 'low'
         elif (rate >= 0.6 and rate < 0.75):
             u2 = 20/3*rate - 4
-            trafficState2 = 'd'
+            trafficState2 = 'high'
         elif (rate >= 0.75 and rate < 0.9):
             u2 = -20/3*rate + 6
-            trafficState2 = 'd'
+            trafficState2 = 'high'
         else:
             u2 = 0
             trafficState2 = None
@@ -96,15 +104,15 @@ class timeDecision:
         return u1, u2, trafficState1, trafficState2
 
     def __deFuzzy(self, u, state):
-        if (state == 'rv'):
+        if (state == 'very-low'):
             y = u*20
-        elif (state == 'v'):
+        elif (state == 'low'):
             y = u*30
-        elif (state == 'tb'):
+        elif (state == 'medium'):
             y = u*50
-        elif (state == 'd'):
+        elif (state == 'high'):
             y = u*70
-        elif (state == 'rd'):
+        elif (state == 'very-high'):
             y = u*80
         else:
             y = 0
@@ -112,7 +120,7 @@ class timeDecision:
 
     def timeGreen(self):
         u1, u2, trafficState1, trafficState2 = self.__trafficDensityAnalysis()
-        print(u1, u2, trafficState1, trafficState2)
+        logger.info('u1: %s, u2: %s, trafficState1: %s, trafficState2: %s', u1, u2, trafficState1, trafficState2)
         if (trafficState1 == None):
             timeGreen = self.__deFuzzy(u2, trafficState2)/u2
         elif (trafficState2 == None):
@@ -123,5 +131,5 @@ class timeDecision:
         return int(timeGreen)
 
 # # # Test timeDecision
-# abc = timeDecision('rtsp://admin:test12345@192.168.100.15:554/onvif1', 0, 720, 0, 1280, 10, 50, 5)
+# abc = timeDecision('rtsp://localhost:8554', 0, 720, 0, 1280, 10, 50, 5)
 # print('TimeGreen', abc.timeGreen())
