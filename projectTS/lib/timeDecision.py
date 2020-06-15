@@ -27,8 +27,8 @@ class timeDecision:
         cap = cv2.VideoCapture(self.cameraIp, cv2.CAP_FFMPEG)
         # cap = cv2.VideoCapture(self.cameraIp)
         ret, frame = cap.read()
-        cap.release()
-        cv2.destroyAllWindows()
+        # cap.release()
+        # cv2.destroyAllWindows()
         return frame
 
     def grayImageToBlockGrayImage(self):
@@ -58,9 +58,9 @@ class timeDecision:
                     ndBlock += 1
                     blackImage[i:i+self.pixelBlock, j:j+self.pixelBlock] = 255
         if (self.isWriteImage):
-            cv2.imwrite(self.pathToStoreImg + 'image1' + time.ctime(time.time()) + '.png', image1)
-            cv2.imwrite(self.pathToStoreImg + 'image2' + time.ctime(time.time()) + '.png', image2)
-            cv2.imwrite(self.pathToStoreImg + 'black-image' + time.ctime(time.time()) + '.png', blackImage)
+            cv2.imwrite(self.pathToStoreImg + time.ctime(time.time()) + 'image1' + '.png', image1)
+            cv2.imwrite(self.pathToStoreImg + time.ctime(time.time()) + 'image2' + '.png', image2)
+            cv2.imwrite(self.pathToStoreImg + time.ctime(time.time()) + 'black-image' + '.png', blackImage)
 
         logger.info('ndBlock: %s, nBlock: %s, rate: %s', ndBlock, nBlock, ndBlock/nBlock*100)
         return nBlock, ndBlock

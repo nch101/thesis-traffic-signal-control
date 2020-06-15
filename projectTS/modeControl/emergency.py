@@ -9,5 +9,7 @@ import projectTS.vals as vals
 
 def emergency():
     for i in range(0, vals.nTrafficLights):
-        if ((vals.lightStatus[i] == 'yellow') and (vals.timeLight[i] == 0)):
+        if ((vals.lightStatus[i] == 'yellow') and \
+            (vals.timeLight[i] == 0)):
+            
             vals.lightStatus[i] = 'red'

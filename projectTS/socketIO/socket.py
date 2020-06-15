@@ -52,7 +52,9 @@ def connect():
         logger.info('Is connect lost: %s', isConnectLost)
 
 
-sio.connect(serverAddress, headers = headers, namespaces=[stateLightNsp, controlLightNsp, cameraNsp])
+sio.connect(serverAddress, headers = headers, 
+namespaces=[stateLightNsp, controlLightNsp, cameraNsp])
+
 subscribeIntersection()
 
 @sio.event
