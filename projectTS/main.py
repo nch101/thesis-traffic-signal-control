@@ -23,8 +23,7 @@ import projectTS.vals as vals
 # from projectTS.lib.showLight import showLight
 from projectTS.socketIO.socket import *
 from projectTS.initial import initConfig, initAutomatic, initManual
-from projectTS.imagesProcessing.streamStreet import onStreamStreet
-from projectTS.imagesProcessing.trafficDensityAnalysis import trafficDensityAnalysis
+from projectTS.imagesProcessing.imagesProcessing import onImagesProcessing
 from projectTS.modeControl.updateMode import updateModeControl
 from projectTS.socketIO.socket import updateStateLight
 
@@ -76,7 +75,6 @@ def onControlAndDisplay(stop_event):
     else:
         pass
 
-    thread3.start()
     while not stop_event.wait(0):
         updateModeControl()
         logger.debug('Mode control: %s', vals.mode)
@@ -89,18 +87,15 @@ def onControlAndDisplay(stop_event):
 
 try:
     thread1 = threading.Thread(target=onControlAndDisplay, args=(stopThread, ))
-    thread2 = threading.Thread(target=onStreamStreet, args=(stopThread, ))
-    thread3 = threading.Thread(target=trafficDensityAnalysis, args=(stopThread, ))
+    thread2 = threading.Thread(target=onImagesProcessing, args=(stopThread, ))
 
     thread1.start()
     thread2.start()
 
     thread1.join()
     thread2.join()
-    thread3.join()
 
 except KeyboardInterrupt:
-    print('Keyboard interrupt')
     logger.info('Keyboard interrupt')
     stopThread.set()
     # GPIO.cleanup()

@@ -9,10 +9,23 @@ import time
 logger = logging.getLogger('projectTS.lib.timeDesition')
 
 class timeDecision:
-    def __init__(self, cameraIp, xBegin, xEnd, yBegin, yEnd, 
+    """ Traffic density analysis use fuzzy control logic to decide time green
+        ** Crop image **
+        @param xBegin: Pixel x begins
+        @param xEnd: Pixel x ends
+        @param yBegin: Pixel y begins
+        @param yEnd: Pixel y ends
+        ****************
+
+        @param pixelBlock: Size of block (pixelBlock x pixelBlock)
+        @param deltaGrayLevel: Gray level difference of 2 images
+        @param timeToCapture: Time interval between 2 consecutive shots
+        @param isWriteImage; default False. Whether write image or not
+        @param pathToStoreImg: default ''. Path to store image
+    """
+    def __init__(self, xBegin, xEnd, yBegin, yEnd, 
     pixelBlock, deltaGrayLevel, timeToCapture, 
     isWriteImage=False, pathToStoreImg=''):
-        self.cameraIp = cameraIp
         self.xBegin = xBegin
         self.xEnd = xEnd
         self.yBegin = yBegin
@@ -22,17 +35,10 @@ class timeDecision:
         self.timeToCapture = timeToCapture
         self.isWriteImage = isWriteImage
         self.pathToStoreImg = pathToStoreImg
-
-    def captureVideo(self):
-        cap = cv2.VideoCapture(self.cameraIp, cv2.CAP_FFMPEG)
-        # cap = cv2.VideoCapture(self.cameraIp)
-        ret, frame = cap.read()
-        # cap.release()
-        # cv2.destroyAllWindows()
-        return frame
+        self.frame = np.ones((1,1,1), dtype=np.uint8)
 
     def grayImageToBlockGrayImage(self):
-        image = cv2.cvtColor(self.captureVideo(), cv2.COLOR_BGR2GRAY)
+        image = cv2.cvtColor(self.frame, cv2.COLOR_BGR2GRAY)
         cropImage = image[self.yBegin:self.yEnd, self.xBegin:self.xEnd]
         width, height = cropImage.shape
         for i in range(0, width, self.pixelBlock):
