@@ -86,12 +86,22 @@ def updateStateLight():
     except:
         logger.warning('Cannot transmit time light and light state to server')
 
-def transmitImages(frames):
+def transmitImagesAtNorthStreet(frames):
     try:
         framesData = {
             'room': interID,
             'data': frames
         }
-        sio.emit('[intersection]-camera', framesData, cameraNsp)
+        sio.emit('[intersection]-north-street', framesData, cameraNsp)
+    except:
+        logger.warning('Cannot transmit frames to server')
+
+def transmitImagesAtWestStreet(frames):
+    try:
+        framesData = {
+            'room': interID,
+            'data': frames
+        }
+        sio.emit('[intersection]-west-street', framesData, cameraNsp)
     except:
         logger.warning('Cannot transmit frames to server')

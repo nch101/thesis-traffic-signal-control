@@ -23,7 +23,8 @@ import projectTS.vals as vals
 # from projectTS.lib.showLight import showLight
 from projectTS.socketIO.socket import *
 from projectTS.initial import initConfig, initAutomatic, initManual
-from projectTS.imagesProcessing.imagesProcessing import onImagesProcessing
+from projectTS.imagesProcessing.imagesProcessing1 import onImagesProcessing1
+from projectTS.imagesProcessing.imagesProcessing2 import onImagesProcessing2
 from projectTS.modeControl.updateMode import updateModeControl
 from projectTS.socketIO.socket import updateStateLight
 
@@ -87,13 +88,16 @@ def onControlAndDisplay(stop_event):
 
 try:
     thread1 = threading.Thread(target=onControlAndDisplay, args=(stopThread, ))
-    thread2 = threading.Thread(target=onImagesProcessing, args=(stopThread, ))
+    thread2 = threading.Thread(target=onImagesProcessing1, args=(stopThread, ))
+    thread3 = threading.Thread(target=onImagesProcessing2, args=(stopThread, ))
 
     thread1.start()
     thread2.start()
+    thread3.start()
 
     thread1.join()
     thread2.join()
+    thread3.join()
 
 except KeyboardInterrupt:
     logger.info('Keyboard interrupt')

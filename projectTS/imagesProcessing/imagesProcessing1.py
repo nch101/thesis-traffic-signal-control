@@ -1,4 +1,4 @@
-# ********* image socket *********
+# ********* images processing *********
 # * Author: Nguyen Cong Huy
 # *****************************
 
@@ -13,10 +13,10 @@ import threading
 import cv2
 import base64
 import projectTS.vals as vals
-from projectTS.socketIO.socket import transmitImages
+from projectTS.socketIO.socket import transmitImagesAtNorthStreet
 from projectTS.lib.timeDecision import timeDecision
 
-logger = logging.getLogger('projectTS.imagesProcessing.imagesProcessing')
+logger = logging.getLogger('projectTS.imagesProcessing.imagesProcessing1')
 
 config = configparser.ConfigParser()
 config.read('config.ini')
@@ -41,7 +41,7 @@ class streetEnum(enum.Enum):
     street3 = 2
     street4 = 3
 
-def onImagesProcessing(stop_event):
+def onImagesProcessing1(stop_event):
     logger.info('on Images Processing')
 
     street1 = timeDecision(xBegin, xEnd, yBegin, yEnd, 
@@ -60,7 +60,7 @@ def onStreamStreet(frame):
     buffer = cv2.imencode('.jpg', frame)
     frameEncode = base64.b64encode(buffer[1])
     frameText = frameEncode.decode('utf-8')
-    transmitImages(frameText)
+    # transmitImagesAtNorthStreet(frameText)
 
 def trafficDensityAnalysis(street, stop_event):
     logger.info('Traffic density analysis at street 1 is running ')
@@ -77,11 +77,6 @@ def trafficDensityAnalysis(street, stop_event):
                 logger.info('Traffic density analysis at %s is running', streetEnum.street1.name)
                 vals.timeGreenFlexible = street.timeGreen()
                 logger.info('Time green at %s : %s', streetEnum.street1.name, vals.timeGreenFlexible)
-            elif ((vals.lightStatus[streetEnum.street2.value] == 'yellow') and \
-                (vals.timeLight[streetEnum.street2.value] == 0)):
-                logger.info('Traffic density analysis at %s is running', streetEnum.street2.name)
-                vals.timeGreenFlexible = street.timeGreen()
-                logger.info('Time green at %s : %s', streetEnum.street2.name, vals.timeGreenFlexible)
             else:
                 pass
         time.sleep(1)
