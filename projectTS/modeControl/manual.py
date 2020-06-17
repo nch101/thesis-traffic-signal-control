@@ -10,7 +10,7 @@ def manual():
     for index in range(0, vals.nTrafficLights):
         if ((vals.lightStatus[index] == 'red') and \
             (vals.changeLight)):
-            
+
             vals.lightStatus[index] = 'green'
         
         elif ((vals.lightStatus[index] == 'yellow') and \

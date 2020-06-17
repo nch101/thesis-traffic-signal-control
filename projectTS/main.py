@@ -60,7 +60,9 @@ def showLight():
 
 def countDown():
     for i in range(0, vals.nTrafficLights):
-        if (vals.timeLight[i] >= 0):
+        if ((vals.timeLight[i] >= 0) and (not vals.mode == 'manual')):
+            vals.timeLight[i] -= 1
+        elif ((vals.timeLight[i] > 0) and (vals.mode == 'manual')):
             vals.timeLight[i] -= 1
 
         if ((vals.timeLight[i] == 0) and (vals.lightStatus[i] == 'yellow') and (vals.mode == 'manual')):
