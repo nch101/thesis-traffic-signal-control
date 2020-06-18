@@ -56,11 +56,14 @@ def westStreet(stop_event):
         street2.frame = frame
 
 def onStreamStreet(frame):
-    frame = cv2.resize(frame, (711, 400))
-    buffer = cv2.imencode('.jpg', frame)
-    frameEncode = base64.b64encode(buffer[1])
-    frameText = frameEncode.decode('utf-8')
-    # transmitImagesAtWestStreet(frameText)
+    if vals.isTransmitNorthStreetOff:
+        vals.isTransmitWestStreetOff = False
+        frame = cv2.resize(frame, (711, 400))
+        buffer = cv2.imencode('.jpg', frame)
+        frameEncode = base64.b64encode(buffer[1])
+        frameText = frameEncode.decode('utf-8')
+        transmitImagesAtWestStreet(frameText)
+        vals.isTransmitWestStreetOff = True
 
 def trafficDensityAnalysis(street, stop_event):
     try:

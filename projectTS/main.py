@@ -92,6 +92,7 @@ def onControlAndDisplay(stop_event):
         updateStateLight()
         # showLight()
         if (time.time() - preTime) >= timeToUpdate:
+            preTime = time.time()
             updateTrafficDensity()
         time.sleep(1)
         countDown()

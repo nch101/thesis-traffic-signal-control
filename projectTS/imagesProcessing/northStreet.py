@@ -50,17 +50,21 @@ def northStreet(stop_event):
     thread = threading.Thread(target=trafficDensityAnalysis, args=(street1, stop_event, ))
     thread.start()
     cap = cv2.VideoCapture(cameraURL, cv2.CAP_FFMPEG)
+    # cap = cv2.VideoCapture(0)
     while not stop_event.wait(0):
         ret, frame = cap.read()
         onStreamStreet(frame)
         street1.frame = frame
 
 def onStreamStreet(frame):
-    frame = cv2.resize(frame, (711, 400))
-    buffer = cv2.imencode('.jpg', frame)
-    frameEncode = base64.b64encode(buffer[1])
-    frameText = frameEncode.decode('utf-8')
-    transmitImagesAtNorthStreet(frameText)
+    if vals.isTransmitWestStreetOff:
+        vals.isTransmitNorthStreetOff = False
+        frame = cv2.resize(frame, (711, 400))
+        buffer = cv2.imencode('.jpg', frame)
+        frameEncode = base64.b64encode(buffer[1])
+        frameText = frameEncode.decode('utf-8')
+        transmitImagesAtNorthStreet(frameText)
+        vals.isTransmitNorthStreetOff = True
 
 def trafficDensityAnalysis(street, stop_event):
     try:

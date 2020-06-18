@@ -6,7 +6,8 @@
 
 global mode, timeRed, timeYellow, timeGreen, delta, nTrafficLights, \
 lightStatus, priorityStreet, timeLight, timeGreenFlexibleNS, timeGreenFlexibleWS, \
-rateNS, rateWS, stateNS, stateWS, changeFlag, changeLight
+rateNS, rateWS, stateNS, stateWS, changeFlag, changeLight, \
+isTransmitNorthStreetOff, isTransmitWestStreetOff
 
 mode = ''
 timeRed = 0
@@ -23,5 +24,7 @@ rateNS = 0
 rateWS = 0
 stateNS = ''
 stateWS = ''
+isTransmitNorthStreetOff = True
+isTransmitWestStreetOff = False
 changeFlag = False
 changeLight = False
