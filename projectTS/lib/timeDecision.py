@@ -6,7 +6,7 @@ import cv2
 import numpy as np
 import time
 
-logger = logging.getLogger('projectTS.lib.timeDesition')
+logger = logging.getLogger('projectTS.lib.timeDecision')
 
 class timeDecision:
     """ Traffic density analysis use fuzzy control logic to decide time green
@@ -107,7 +107,7 @@ class timeDecision:
             u2 = 0
             trafficState2 = None
 
-        return u1, u2, trafficState1, trafficState2
+        return u1, u2, trafficState1, trafficState2, rate
 
     def __deFuzzy(self, u, state):
         if (state == 'very-low'):
@@ -125,7 +125,7 @@ class timeDecision:
         return y
 
     def timeGreen(self):
-        u1, u2, trafficState1, trafficState2 = self.__trafficDensityAnalysis()
+        u1, u2, trafficState1, trafficState2, rate = self.__trafficDensityAnalysis()
         logger.info('u1: %s, u2: %s, trafficState1: %s, trafficState2: %s', u1, u2, trafficState1, trafficState2)
         if (trafficState1 == None):
             timeGreen = self.__deFuzzy(u2, trafficState2)/u2
@@ -136,6 +136,11 @@ class timeDecision:
         
         return int(timeGreen)
 
-# # # Test timeDecision
-# abc = timeDecision('rtsp://localhost:8554', 0, 720, 0, 1280, 10, 50, 5)
-# print('TimeGreen', abc.timeGreen())
+    def level(self):
+        u1, u2, trafficState1, trafficState2, rate = self.__trafficDensityAnalysis()
+        if (u1 >= u2):
+            state = trafficState1
+        else:
+            state = trafficState2
+        
+        return state, rate

@@ -23,8 +23,9 @@ import projectTS.vals as vals
 # from projectTS.lib.showLight import showLight
 from projectTS.socketIO.socket import *
 from projectTS.initial import initConfig, initAutomatic, initManual
-from projectTS.imagesProcessing.imagesProcessing1 import onImagesProcessing1
-from projectTS.imagesProcessing.imagesProcessing2 import onImagesProcessing2
+from projectTS.imagesProcessing.northStreet import northStreet
+from projectTS.imagesProcessing.westStreet import westStreet
+from projectTS.imagesProcessing.updateTrafficDensity import updateTrafficDensity
 from projectTS.modeControl.updateMode import updateModeControl
 from projectTS.socketIO.socket import updateStateLight
 
@@ -52,6 +53,9 @@ stopThread = threading.Event()
 #                         int(street2Conf['yellow_pin']),
 #                         int(street2Conf['green_pin']))
 
+default = config['DEFAULT']
+timeToUpdate = int(default['timeToUpdate'])
+
 def showLight():
     numberLight1.showNumber(vals.timeLight[0])
     numberLight2.showNumber(vals.timeLight[1])
@@ -77,6 +81,8 @@ def onControlAndDisplay(stop_event):
         initManual()
     else:
         pass
+    
+    preTime = time.time()
 
     while not stop_event.wait(0):
         updateModeControl()
@@ -85,13 +91,15 @@ def onControlAndDisplay(stop_event):
         logger.debug('Time light: %s', vals.timeLight)
         updateStateLight()
         # showLight()
+        if (time.time() - preTime) >= timeToUpdate:
+            updateTrafficDensity()
         time.sleep(1)
         countDown()
 
 try:
     thread1 = threading.Thread(target=onControlAndDisplay, args=(stopThread, ))
-    thread2 = threading.Thread(target=onImagesProcessing1, args=(stopThread, ))
-    thread3 = threading.Thread(target=onImagesProcessing2, args=(stopThread, ))
+    thread2 = threading.Thread(target=northStreet, args=(stopThread, ))
+    thread3 = threading.Thread(target=westStreet, args=(stopThread, ))
 
     thread1.start()
     thread2.start()
@@ -107,4 +115,4 @@ except KeyboardInterrupt:
     # GPIO.cleanup()
     quit()
 except Exception as e:
-    logger.error('Something is wrong: %s', e)
+    logger.error(e, exc_info=True)

@@ -16,7 +16,7 @@ import projectTS.vals as vals
 from projectTS.socketIO.socket import transmitImagesAtNorthStreet
 from projectTS.lib.timeDecision import timeDecision
 
-logger = logging.getLogger('projectTS.imagesProcessing.imagesProcessing1')
+logger = logging.getLogger('projectTS.imagesProcessing.northStreet')
 
 config = configparser.ConfigParser()
 config.read('config.ini')
@@ -41,14 +41,14 @@ class streetEnum(enum.Enum):
     street3 = 2
     street4 = 3
 
-def onImagesProcessing1(stop_event):
+def northStreet(stop_event):
     logger.info('on Images Processing')
 
     street1 = timeDecision(xBegin, xEnd, yBegin, yEnd, 
     pixelBlock, deltaGray, timeToCapture, 
     isWriteImage=isWriteImage, pathToStoreImg=pathToStoreImg)
-    thread3 = threading.Thread(target=trafficDensityAnalysis, args=(street1, stop_event, ))
-    thread3.start()
+    thread = threading.Thread(target=trafficDensityAnalysis, args=(street1, stop_event, ))
+    thread.start()
     cap = cv2.VideoCapture(cameraURL, cv2.CAP_FFMPEG)
     while not stop_event.wait(0):
         ret, frame = cap.read()
@@ -60,23 +60,28 @@ def onStreamStreet(frame):
     buffer = cv2.imencode('.jpg', frame)
     frameEncode = base64.b64encode(buffer[1])
     frameText = frameEncode.decode('utf-8')
-    # transmitImagesAtNorthStreet(frameText)
+    transmitImagesAtNorthStreet(frameText)
 
 def trafficDensityAnalysis(street, stop_event):
-    logger.info('Traffic density analysis at street 1 is running ')
+    try:
+        logger.info('Traffic density analysis at street 1 is running ')
 
-    isBegin = True
-    while not stop_event.wait(0):
-        if (isBegin):
-            isBegin = False
-            vals.timeGreenFlexible = 20
-            logger.info('Init time green %s', vals.timeGreenFlexible)
-        else:
-            if ((vals.lightStatus[streetEnum.street1.value] == 'yellow') and \
-                (vals.timeLight[streetEnum.street1.value] == 0)):
-                logger.info('Traffic density analysis at %s is running', streetEnum.street1.name)
-                vals.timeGreenFlexible = street.timeGreen()
-                logger.info('Time green at %s : %s', streetEnum.street1.name, vals.timeGreenFlexible)
+        isBegin = True
+        while not stop_event.wait(0):
+            if (isBegin):
+                isBegin = False
+                vals.timeGreenFlexibleNS = 20
+                logger.info('Init time green %s', vals.timeGreenFlexibleNS)
             else:
-                pass
-        time.sleep(1)
+                if ((vals.lightStatus[streetEnum.street1.value] == 'yellow') and \
+                    (vals.timeLight[streetEnum.street1.value] == 0)):
+                    logger.info('Traffic density analysis at %s is running', streetEnum.street1.name)
+                    vals.timeGreenFlexibleNS = street.timeGreen()
+                    vals.stateNS, vals.rateNS = street.level()
+                    logger.info('State %s, rate %s', vals.stateNS, vals.rateNS)
+                    logger.info('Time green at %s : %s', streetEnum.street1.name, vals.timeGreenFlexibleNS)
+                else:
+                    pass
+            time.sleep(1)
+    except Exception as e:
+        logger.error('Something is wrong: %s', e)

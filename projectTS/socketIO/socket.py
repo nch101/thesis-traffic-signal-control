@@ -18,17 +18,11 @@ config = configparser.ConfigParser()
 config.read('config.ini')
 
 defaultConf = config['DEFAULT']
+serverAddress = defaultConf['server']
 interID = defaultConf['intersection_id']
 stateLightNsp = defaultConf['stateLightNsp']
 controlLightNsp = defaultConf['controlLightNsp']
 cameraNsp = defaultConf['cameraNsp']
-
-# dorm = config['DORM']
-# serverAddress = dorm['server']
-# smartphone = config['SMARTPHONE']
-# serverAddress = smartphone['server']
-test = config['TEST']
-serverAddress = test['server']
 
 isConnectLost = False
 def subscribeIntersection():

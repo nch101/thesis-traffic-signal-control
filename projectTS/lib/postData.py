@@ -10,5 +10,5 @@ class postData:
         self.__res = requests.post(self.__requestURL, headers=self.__headers, verify=False, data=payload)
         if (self.__res.status_code == 200):
             return True
-        else
+        else:
             return False
