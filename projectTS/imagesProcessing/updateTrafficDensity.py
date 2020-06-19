@@ -18,14 +18,12 @@ intersection = postData(postDataURL, interID, token)
 
 def updateTrafficDensity():
     if (vals.rateNS >= vals.rateWS):
-        print('********rateNS ', vals.rateNS)
         result = intersection.postData({ 
             'rate': vals.rateNS,
             'state': vals.stateNS
-            })
+        })
     else:
-        print('********rateNS ', vals.rateWS)
-        result = intersection.postData({
+        result = intersection.postData({ 
             'rate': vals.rateWS,
             'state': vals.stateWS
         })

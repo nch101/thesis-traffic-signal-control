@@ -6,7 +6,7 @@ import cv2
 import numpy as np
 import time
 
-logger = logging.getLogger('projectTS.lib.timeDecision')
+logger = logging.getLogger('projectTS.lib.estimatedTimeGreen')
 
 class timeDecision:
     """ Traffic density analysis use fuzzy control logic to decide time green
@@ -64,83 +64,31 @@ class timeDecision:
                     ndBlock += 1
                     blackImage[i:i+self.pixelBlock, j:j+self.pixelBlock] = 255
         if (self.isWriteImage):
-            cv2.imwrite(self.pathToStoreImg + time.ctime(time.time()) + 'image1' + '.png', image1)
-            cv2.imwrite(self.pathToStoreImg + time.ctime(time.time()) + 'image2' + '.png', image2)
-            cv2.imwrite(self.pathToStoreImg + time.ctime(time.time()) + 'black-image' + '.png', blackImage)
+            cv2.imwrite(self.pathToStoreImg + time.ctime(time.time()) + '- image1' + '.png', image1)
+            cv2.imwrite(self.pathToStoreImg + time.ctime(time.time()) + '- image2' + '.png', image2)
+            cv2.imwrite(self.pathToStoreImg + time.ctime(time.time()) + '- black-image' + '.png', blackImage)
 
         logger.info('ndBlock: %s, nBlock: %s, rate: %s', ndBlock, nBlock, ndBlock/nBlock*100)
         return nBlock, ndBlock
 
-    def __trafficDensityAnalysis(self):
+    def trafficDensityAnalysis(self):
         nBlock, ndBlock = self.onSubBlockGrayImage()
-        rate = ndBlock/nBlock
+        rate = (ndBlock/nBlock)*100
 
-        if (rate >= 0 and rate < 0.2):
-            u1 = -5*rate + 1
-            trafficState1 = 'very-low'
-        elif (rate >= 0.3 and rate < 0.5):
-            u1 = 5*rate - 3/2
-            trafficState1 = 'medium'
-        elif (rate >= 0.5 and rate < 0.7):
-            u1 = -5*rate + 7/2
-            trafficState1 = 'medium'
-        elif (rate >= 0.8 and rate <= 1):
-            u1 = 5*rate -4
-            trafficState1 = 'very-high'
-        else:
-            u1 = 0
-            trafficState1 = None
+        if (rate >= 0 and rate < 30):
+            timeGreen = 25
+            state = 'very-low'
+        elif (rate >= 30 and rate < 45):
+            timeGreen = 11/12*rate - 5/2
+            state = 'low'
+        elif (rate >= 45 and rate < 75):
+            timeGreen = 11/12*rate - 5/2
+            state = 'medium'
+        elif (rate >= 75 and rate < 90):
+            timeGreen = 11/12*rate - 5/2
+            state = 'high'
+        elif (rate >= 90 and rate <= 100):
+            timeGreen = 80
+            state = 'very-high'
 
-        if (rate >= 0.1 and rate < 0.25):
-            u2 = 20/3*rate - 2/3
-            trafficState2 = 'low'
-        elif (rate >= 0.25 and rate < 0.4):
-            u2 = -20/3*rate + 8/3
-            trafficState2 = 'low'
-        elif (rate >= 0.6 and rate < 0.75):
-            u2 = 20/3*rate - 4
-            trafficState2 = 'high'
-        elif (rate >= 0.75 and rate < 0.9):
-            u2 = -20/3*rate + 6
-            trafficState2 = 'high'
-        else:
-            u2 = 0
-            trafficState2 = None
-
-        return u1, u2, trafficState1, trafficState2, rate
-
-    def __deFuzzy(self, u, state):
-        if (state == 'very-low'):
-            y = u*20
-        elif (state == 'low'):
-            y = u*30
-        elif (state == 'medium'):
-            y = u*50
-        elif (state == 'high'):
-            y = u*70
-        elif (state == 'very-high'):
-            y = u*80
-        else:
-            y = 0
-        return y
-
-    def timeGreen(self):
-        u1, u2, trafficState1, trafficState2, rate = self.__trafficDensityAnalysis()
-        logger.info('u1: %s, u2: %s, trafficState1: %s, trafficState2: %s', u1, u2, trafficState1, trafficState2)
-        if (trafficState1 == None):
-            timeGreen = self.__deFuzzy(u2, trafficState2)/u2
-        elif (trafficState2 == None):
-            timeGreen = self.__deFuzzy(u1, trafficState1)/u1
-        else:
-            timeGreen = (self.__deFuzzy(u1, trafficState1) + self.__deFuzzy(u2, trafficState2))/(u1+u2)
-        
-        return int(timeGreen)
-
-    def level(self):
-        u1, u2, trafficState1, trafficState2, rate = self.__trafficDensityAnalysis()
-        if (u1 >= u2):
-            state = trafficState1
-        else:
-            state = trafficState2
-        
-        return state, rate
+        return int(timeGreen), int(rate), state

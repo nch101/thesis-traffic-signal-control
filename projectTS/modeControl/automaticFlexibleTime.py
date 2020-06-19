@@ -9,18 +9,18 @@ import projectTS.vals as vals
 def automaticFlexibleTime():
     for index in range(0, vals.nTrafficLights):
         if index%2:
-            setTimeLight(vals.timeGreenFlexibleWS, index)
+            setTimeLight(vals.timeGreenFlexibleWS, vals.timeGreenFlexibleNS, index)
         else:
-            setTimeLight(vals.timeGreenFlexibleNS, index)
+            setTimeLight(vals.timeGreenFlexibleNS, vals.timeGreenFlexibleWS, index)
 
-def setTimeLight(timeGreen, index):
+def setTimeLight(timeGreen, timeGreenForTimeRed, index):
     if ((vals.timeLight[index] == -1) and \
     (vals.lightStatus[index] == 'red')):
         vals.timeLight[index] = timeGreen
         vals.lightStatus[index] = 'green'
     elif ((vals.timeLight[index] == -1) and \
         (vals.lightStatus[index] == 'yellow')):
-        vals.timeLight[index] = timeGreen + vals.timeYellow[index] + 2*vals.delta + 3
+        vals.timeLight[index] = timeGreenForTimeRed + vals.timeYellow[index] + 2*vals.delta + 3
         vals.lightStatus[index] = 'red'
     elif ((vals.timeLight[index] == -1) and \
         (vals.lightStatus[index] == 'green')):

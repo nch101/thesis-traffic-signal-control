@@ -14,20 +14,20 @@ import cv2
 import base64
 import projectTS.vals as vals
 from projectTS.socketIO.socket import transmitImagesAtNorthStreet
-from projectTS.lib.timeDecision import timeDecision
+from projectTS.lib.estimatedTimeGreen import timeDecision
 
 logger = logging.getLogger('projectTS.imagesProcessing.northStreet')
 
 config = configparser.ConfigParser()
 config.read('config.ini')
 
-street1Conf = config['STREET-1']
-cameraURL = street1Conf['camera']
-xBegin = int(street1Conf['xBegin'])
-xEnd = int(street1Conf['xEnd'])
-yBegin = int(street1Conf['yBegin'])
-yEnd = int(street1Conf['yEnd'])
-pixelBlock = int(street1Conf['pixelBlock'])
+streetConf = config['NORTH-STREET']
+cameraURL = streetConf['camera']
+xBegin = int(streetConf['xBegin'])
+xEnd = int(streetConf['xEnd'])
+yBegin = int(streetConf['yBegin'])
+yEnd = int(streetConf['yEnd'])
+pixelBlock = int(streetConf['pixelBlock'])
 
 default = config['DEFAULT']
 deltaGray = int(default['deltaGray'])
@@ -36,25 +36,25 @@ isWriteImage = default['isWriteImage'].lower() in ['true', '1']
 pathToStoreImg = default['pathToStoreImage']
 
 class streetEnum(enum.Enum):
-    street1 = 0
-    street2 = 1
-    street3 = 2
-    street4 = 3
+    northStreet = 3
+    westStreet = 2
+    southStreet = 1
+    eastStreet = 0
 
 def northStreet(stop_event):
     logger.info('on Images Processing')
 
-    street1 = timeDecision(xBegin, xEnd, yBegin, yEnd, 
+    northStreet = timeDecision(xBegin, xEnd, yBegin, yEnd, 
     pixelBlock, deltaGray, timeToCapture, 
     isWriteImage=isWriteImage, pathToStoreImg=pathToStoreImg)
-    thread = threading.Thread(target=trafficDensityAnalysis, args=(street1, stop_event, ))
+    thread = threading.Thread(target=trafficDensityAnalysis, args=(northStreet, stop_event, ))
     thread.start()
     cap = cv2.VideoCapture(cameraURL, cv2.CAP_FFMPEG)
     # cap = cv2.VideoCapture(0)
     while not stop_event.wait(0):
         ret, frame = cap.read()
         onStreamStreet(frame)
-        street1.frame = frame
+        northStreet.frame = frame
 
 def onStreamStreet(frame):
     if vals.isTransmitWestStreetOff:
@@ -77,13 +77,12 @@ def trafficDensityAnalysis(street, stop_event):
                 vals.timeGreenFlexibleNS = 20
                 logger.info('Init time green %s', vals.timeGreenFlexibleNS)
             else:
-                if ((vals.lightStatus[streetEnum.street1.value] == 'yellow') and \
-                    (vals.timeLight[streetEnum.street1.value] == 0)):
-                    logger.info('Traffic density analysis at %s is running', streetEnum.street1.name)
-                    vals.timeGreenFlexibleNS = street.timeGreen()
-                    vals.stateNS, vals.rateNS = street.level()
+                if ((vals.lightStatus[streetEnum.northStreet.value] == 'yellow') and \
+                    (vals.timeLight[streetEnum.northStreet.value] == 0)):
+                    logger.info('Traffic density analysis at %s is running', streetEnum.northStreet.name)
+                    vals.timeGreenFlexibleNS, vals.rateNS, vals.stateNS = street.trafficDensityAnalysis()
                     logger.info('State %s, rate %s', vals.stateNS, vals.rateNS)
-                    logger.info('Time green at %s : %s', streetEnum.street1.name, vals.timeGreenFlexibleNS)
+                    logger.info('Time green at %s : %s', streetEnum.northStreet.name, vals.timeGreenFlexibleNS)
                 else:
                     pass
             time.sleep(1)
