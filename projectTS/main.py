@@ -22,7 +22,7 @@ import projectTS.vals as vals
 # from projectTS.lib.showNumber import showNumber
 # from projectTS.lib.showLight import showLight
 from projectTS.socketIO.socket import *
-from projectTS.initial import initConfig, initAutomatic, initManual
+from projectTS.initial import initConfig, initAutomatic, initAutomaticFlexible, initManual
 from projectTS.imagesProcessing.northStreet import northStreet
 from projectTS.imagesProcessing.westStreet import westStreet
 from projectTS.imagesProcessing.updateTrafficDensity import updateTrafficDensity
@@ -75,8 +75,10 @@ def countDown():
 def onControlAndDisplay(stop_event):
     logger.info('onControlAndDisplay is running...')
     initConfig()
-    if (vals.mode == 'automatic-fixed-time' or vals.mode == 'automatic-flexible-time'):
+    if (vals.mode == 'automatic-fixed-time'):
         initAutomatic()
+    elif (vals.mode == 'automatic-flexible-time'):
+        initAutomaticFlexible()
     elif (vals.mode == 'manual'):
         initManual()
     else:

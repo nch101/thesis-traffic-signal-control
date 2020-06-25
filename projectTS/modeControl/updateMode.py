@@ -6,7 +6,7 @@
 
 import logging
 import projectTS.vals as vals
-from projectTS.initial import initConfig, initAutomatic, initManual, initEmergency
+from projectTS.initial import initConfig, initAutomatic, initAutomaticFlexible, initManual, initEmergency
 from projectTS.modeControl.automaticFixedTime import automaticFixedTime
 from projectTS.modeControl.automaticFlexibleTime import automaticFlexibleTime
 from projectTS.modeControl.manual import manual
@@ -22,7 +22,7 @@ def changeMode(data):
         logger.info('Updated mode control: %s', vals.mode)
     elif (data == 'automatic-flexible-time'):
         initConfig()
-        initAutomatic()
+        initAutomaticFlexible()
         vals.updateTimeFlag = True
         vals.mode = 'automatic-flexible-time'
         logger.info('Updated mode control: %s', vals.mode)

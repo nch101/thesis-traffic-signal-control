@@ -4,11 +4,6 @@
 
 # - *- coding: utf- 8 - *-
 
-global mode, timeRed, timeYellow, timeGreen, delta, nTrafficLights, \
-lightStatus, priorityStreet, timeLight, timeGreenFlexibleNS, timeGreenFlexibleWS, \
-rateNS, rateWS, stateNS, stateWS, changeFlag, changeLight, \
-isTransmitNorthStreetOff, isTransmitWestStreetOff
-
 mode = ''
 timeRed = 0
 timeYellow = 0

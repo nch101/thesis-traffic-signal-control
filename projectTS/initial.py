@@ -49,6 +49,20 @@ def initAutomatic():
     logger.info('Light status: %s', vals.lightStatus)
     logger.info('Time light: %s', vals.timeLight)
 
+def initAutomaticFlexible():
+    vals.lightStatus = []
+    vals.timeLight = []
+    for index in range(0, vals.nTrafficLights):
+        vals.lightStatus.append('red')
+        if (index % 2):
+            vals.timeLight.append(vals.timeGreenFlexibleNS + vals.timeYellow[index] + 2*vals.delta + 3)
+        else:
+            vals.timeLight.append(vals.delta)
+
+    logger.info('Init automatic')
+    logger.info('Light status: %s', vals.lightStatus)
+    logger.info('Time light: %s', vals.timeLight)
+
 def initManual():
     vals.lightStatus = []
     vals.timeLight = []
@@ -64,17 +78,27 @@ def initManual():
     logger.info('Time light: %s', vals.timeLight)
 
 def initEmergency():
-    vals.lightStatus = []
-    vals.timeLight = []
-    intersection.getData()
-    vals.priorityStreet = intersection.priorityStreet
-    for index in range(0, vals.nTrafficLights):
-        if (vals.priorityStreet[index]):
-            vals.lightStatus.append('green')
-            vals.timeLight.append(0)
-        else:
-            vals.lightStatus.append('yellow')
-            vals.timeLight.append(8)
+    # # vals.lightStatus = []
+    # vals.timeLight = []
+    # intersection.getData()
+    # vals.priorityStreet = intersection.priorityStreet
+    # for index in range(0, vals.nTrafficLights):
+    #     if (vals.priorityStreet[index]):
+    #         if (vals.lightStatus[index] == 'green'):
+    #             vals.timeLight.append(0)
+    #         elif (vals.lightStatus[index] == 'yellow'):
+    #             vals.timeLight.append()
+    #             pass #
+    #         else:
+    #             vals.timeLight.append(8)
+    #     else:
+    #         if (vals.lightStatus[index] == 'green'):
+    #             vals.lightStatus[index] = 'yellow'
+    #             vals.timeLight.append(8)
+    #         elif (vals.lightStatus[index] == 'yellow'):
+    #             pass #
+    #         else:
+    #             pass
 
     logger.info('Init emergency')
     logger.info('Light status: %s', vals.lightStatus)
