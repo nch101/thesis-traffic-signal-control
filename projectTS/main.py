@@ -35,7 +35,7 @@ config.read('config.ini')
 
 stopThread = threading.Event()
 
-# street1Conf = config['STREET-1']
+# street1Conf = config['NORTH-STREET']
 # numberLight1 = showNumber(int(street1Conf['data_pin']), 
 #                         int(street1Conf['clock_pin']), 
 #                         int(street1Conf['latch_pin']))
@@ -44,7 +44,7 @@ stopThread = threading.Event()
 #                         int(street1Conf['yellow_pin']),
 #                         int(street1Conf['green_pin']))
 
-# street2Conf = config['STREET-2']
+# street2Conf = config['WEST-STREET']
 # numberLight2 = showNumber(int(street2Conf['data_pin']), 
 #                         int(street2Conf['clock_pin']), 
 #                         int(street2Conf['latch_pin']))
@@ -64,10 +64,12 @@ def showLight():
 
 def countDown():
     for i in range(0, vals.nTrafficLights):
-        if ((vals.timeLight[i] >= 0) and (not vals.mode == 'manual')):
-            vals.timeLight[i] -= 1
-        elif ((vals.timeLight[i] > 0) and (vals.mode == 'manual')):
-            vals.timeLight[i] -= 1
+        if (vals.mode == 'manual' or vals.mode == 'emergency'):
+            if (vals.timeLight[i] > 0):
+                vals.timeLight[i] -= 1
+        else:
+            if (vals.timeLight[i] >= 0):
+                vals.timeLight[i] -= 1
 
         if ((vals.timeLight[i] == 0) and (vals.lightStatus[i] == 'yellow') and (vals.mode == 'manual')):
             vals.changeLight = True

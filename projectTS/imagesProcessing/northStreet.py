@@ -63,7 +63,7 @@ def onStreamStreet(frame):
         buffer = cv2.imencode('.jpg', frame)
         frameEncode = base64.b64encode(buffer[1])
         frameText = frameEncode.decode('utf-8')
-        transmitImagesAtNorthStreet(frameText)
+        # transmitImagesAtNorthStreet(frameText)
         vals.isTransmitNorthStreetOff = True
 
 def trafficDensityAnalysis(street, stop_event):

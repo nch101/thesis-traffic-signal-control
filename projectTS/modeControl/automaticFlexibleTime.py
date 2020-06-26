@@ -9,9 +9,9 @@ import projectTS.vals as vals
 def automaticFlexibleTime():
     for index in range(0, vals.nTrafficLights):
         if index%2:
-            setTimeLight(vals.timeGreenFlexibleWS, vals.timeGreenFlexibleNS, index)
-        else:
             setTimeLight(vals.timeGreenFlexibleNS, vals.timeGreenFlexibleWS, index)
+        else:
+            setTimeLight(vals.timeGreenFlexibleWS, vals.timeGreenFlexibleNS, index)
 
 def setTimeLight(timeGreen, timeGreenForTimeRed, index):
     if ((vals.timeLight[index] == -1) and \
