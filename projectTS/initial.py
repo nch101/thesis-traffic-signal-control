@@ -77,11 +77,9 @@ def initManual():
     logger.info('Light status: %s', vals.lightStatus)
     logger.info('Time light: %s', vals.timeLight)
 
-def initEmergency():
-    intersection.getData()
-    vals.priorityStreet = intersection.priorityStreet
+def initEmergency(priorityStreet):
     for index in range(0, vals.nTrafficLights):
-        if (vals.priorityStreet[index]):
+        if (priorityStreet == index):
             if (vals.lightStatus[index] == 'green'):
                 vals.timeLight[index] = 0
             elif (vals.lightStatus[index] == 'yellow'):

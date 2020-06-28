@@ -15,6 +15,6 @@ def emergency():
             vals.timeLight[i] = 0
         elif ((vals.lightStatus[i] == 'red') and \
             (vals.timeLight[i] == 0) and \
-            (vals.priorityStreet[i])):
+            (vals.priorityStreet == i)):
             vals.lightStatus[i] = 'green'
             vals.timeLight[i] = 0

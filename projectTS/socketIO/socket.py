@@ -9,7 +9,7 @@ import configparser
 import socketio
 import projectTS.vals as vals
 from projectTS.initial import initAutomatic
-from projectTS.modeControl.updateMode import changeMode, changeLight
+from projectTS.modeControl.updateMode import changeMode, changeLight, prepareEmergencyMode
 from projectTS.initial import checkModeControl
 
 logger = logging.getLogger('projectTS.socketIO.socket')
@@ -22,13 +22,16 @@ serverAddress = defaultConf['server']
 interID = defaultConf['intersection_id']
 stateLightNsp = defaultConf['stateLightNsp']
 controlLightNsp = defaultConf['controlLightNsp']
+emergencyNsp = defaultConf['emergencyNsp']
 cameraNsp = defaultConf['cameraNsp']
 
 isConnectLost = False
 def subscribeIntersection():
     sio.emit('room', interID, controlLightNsp)
+    sio.emit('room', interID, emergencyNsp)
     sio.on('[intersection]-change-mode', changeMode, controlLightNsp)
     sio.on('[intersection]-change-light', changeLight, controlLightNsp)
+    sio.on('[intersection]-emergency', prepareEmergencyMode, emergencyNsp)
     logger.info('Subscribed control at room %s', interID)
 
 headers = { 'intersectionId': interID }
@@ -47,7 +50,7 @@ def connect():
 
 
 sio.connect(serverAddress, headers = headers, 
-namespaces=[stateLightNsp, controlLightNsp, cameraNsp])
+namespaces=[stateLightNsp, controlLightNsp, emergencyNsp, cameraNsp])
 
 subscribeIntersection()
 
