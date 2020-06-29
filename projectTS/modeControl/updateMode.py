@@ -48,30 +48,11 @@ def changeLight(data):
 
 def prepareEmergencyMode(data):
     if (data['state']):
-        if (data['vehicleType'] == 'firetruck'):
-            idVehicles.insert(0, data['vehicleId'])
-            indexOfStreet.insert(0, data['indexOfStreet'])
-            
-            initEmergency(indexOfStreet[0])
-            vals.priorityStreet = indexOfStreet[0]
-            vals.preMode = vals.mode
-            vals.mode = 'emergency'
-            logger.info('Updated mode control: %s', vals.mode)
-        elif (data['vehicleType'] == 'police'):
-            idVehicles.insert(0, data['vehicleId'])
-            indexOfStreet.insert(0, data['indexOfStreet'])
-
-            initEmergency(indexOfStreet[0])
-            vals.priorityStreet = indexOfStreet[0]
-            vals.preMode = vals.mode
-            vals.mode = 'emergency'
-            logger.info('Updated mode control: %s', vals.mode)
-        else:
-            if data['vehicleId'] not in idVehicles:
-                idVehicles.append(data['vehicleId'])
-                indexOfStreet.append(data['indexOfStreet'])
-                logger.info('Vehicle queue: %s', idVehicles)
-                logger.info('Index of street queue: %s', indexOfStreet)
+        if data['vehicleId'] not in idVehicles:
+            idVehicles.append(data['vehicleId'])
+            indexOfStreet.append(data['indexOfStreet'])
+            logger.info('Vehicle queue: %s', idVehicles)
+            logger.info('Index of street queue: %s', indexOfStreet)
         
         if (vals.mode != 'emergency'):
             initEmergency(indexOfStreet[0])
@@ -81,8 +62,9 @@ def prepareEmergencyMode(data):
             vals.mode = 'emergency'
             logger.info('Updated mode control: %s', vals.mode)
     else:
-        del idVehicles[0]
-        del indexOfStreet[0]
+        if len(idVehicles) >= 1:
+            del idVehicles[0]
+            del indexOfStreet[0]
         if len(idVehicles) > 0:
             initEmergency(indexOfStreet[0])
             vals.priorityStreet = indexOfStreet[0]
