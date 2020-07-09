@@ -38,9 +38,14 @@ class timeDecision:
         self.frame = np.ones((1,1,1), dtype=np.uint8)
 
     def grayImageToBlockGrayImage(self):
+        logger.debug('Captured! ')
         image = cv2.cvtColor(self.frame, cv2.COLOR_BGR2GRAY)
         cropImage = image[self.yBegin:self.yEnd, self.xBegin:self.xEnd]
         width, height = cropImage.shape
+        if (self.isWriteImage):
+            cv2.imwrite(self.pathToStoreImg + time.ctime(time.time()) + '- raw-image' + '.png', image)
+            cv2.imwrite(self.pathToStoreImg + time.ctime(time.time()) + '- crop-image' + '.png', cropImage)
+
         for i in range(0, width, self.pixelBlock):
             for j in range(0, height, self.pixelBlock):
                 cropImage[i:i+self.pixelBlock, j:j+self.pixelBlock] = np.mean(cropImage[i:i+self.pixelBlock, j:j+self.pixelBlock])
@@ -64,8 +69,8 @@ class timeDecision:
                     ndBlock += 1
                     blackImage[i:i+self.pixelBlock, j:j+self.pixelBlock] = 255
         if (self.isWriteImage):
-            cv2.imwrite(self.pathToStoreImg + time.ctime(time.time()) + '- image1' + '.png', image1)
-            cv2.imwrite(self.pathToStoreImg + time.ctime(time.time()) + '- image2' + '.png', image2)
+            cv2.imwrite(self.pathToStoreImg + time.ctime(time.time()) + '- block-image1' + '.png', image1)
+            cv2.imwrite(self.pathToStoreImg + time.ctime(time.time()) + '- block-image2' + '.png', image2)
             cv2.imwrite(self.pathToStoreImg + time.ctime(time.time()) + '- black-image' + '.png', blackImage)
 
         logger.info('ndBlock: %s, nBlock: %s, rate: %s', ndBlock, nBlock, ndBlock/nBlock*100)
@@ -75,19 +80,19 @@ class timeDecision:
         nBlock, ndBlock = self.onSubBlockGrayImage()
         rate = (ndBlock/nBlock)*100
 
-        if (rate >= 0 and rate < 30):
+        if (rate >= 0 and rate < 10):
             timeGreen = 25
             state = 'very-low'
-        elif (rate >= 30 and rate < 45):
-            timeGreen = 11/12*rate - 5/2
+        elif (rate >= 10 and rate < 20):
+            timeGreen = 11/10*rate + 14
             state = 'low'
-        elif (rate >= 45 and rate < 75):
-            timeGreen = 11/12*rate - 5/2
+        elif (rate >= 20 and rate < 45):
+            timeGreen = 11/10*rate + 14
             state = 'medium'
-        elif (rate >= 75 and rate < 90):
-            timeGreen = 11/12*rate - 5/2
+        elif (rate >= 45 and rate < 60):
+            timeGreen = 11/10*rate + 14
             state = 'high'
-        elif (rate >= 90 and rate <= 100):
+        elif (rate >= 60 and rate <= 100):
             timeGreen = 80
             state = 'very-high'
 

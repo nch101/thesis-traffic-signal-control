@@ -103,16 +103,16 @@ def onControlAndDisplay(stop_event):
 
 try:
     thread1 = threading.Thread(target=onControlAndDisplay, args=(stopThread, ))
-    # thread2 = threading.Thread(target=northStreet, args=(stopThread, ))
-    # thread3 = threading.Thread(target=westStreet, args=(stopThread, ))
+    thread2 = threading.Thread(target=northStreet, args=(stopThread, ))
+    thread3 = threading.Thread(target=westStreet, args=(stopThread, ))
 
     thread1.start()
-    # thread2.start()
-    # thread3.start()
+    thread2.start()
+    thread3.start()
 
     thread1.join()
-    # thread2.join()
-    # thread3.join()
+    thread2.join()
+    thread3.join()
 
 except KeyboardInterrupt:
     logger.info('Keyboard interrupt')
