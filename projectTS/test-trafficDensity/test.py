@@ -1,12 +1,6 @@
-import os
-os.environ["OPENCV_FFMPEG_CAPTURE_OPTIONS"] = "rtsp_transport;udp"
-import logging
-
 import cv2
 import numpy as np
 import time
-
-logger = logging.getLogger('projectTS.lib.estimatedTimeGreen')
 
 class timeDecision:
     """ Traffic density analysis use fuzzy control logic to decide time green
@@ -37,27 +31,26 @@ class timeDecision:
         self.pathToStoreImg = pathToStoreImg
         self.frame = np.ones((1,1,1), dtype=np.uint8)
 
-    def grayImageToBlockGrayImage(self):
-        logger.debug('******** Captured! ********')
-        image = cv2.cvtColor(self.frame, cv2.COLOR_BGR2GRAY)
+    def grayImageToBlockGrayImage(self, frame):
+        image = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         cropImage = image[self.yBegin:self.yEnd, self.xBegin:self.xEnd]
         width, height = cropImage.shape
-        if (self.isWriteImage):
-            cv2.imwrite(self.pathToStoreImg + time.ctime(time.time()) + '- raw-image' + '.png', image)
-            cv2.imwrite(self.pathToStoreImg + time.ctime(time.time()) + '- crop-image' + '.png', cropImage)
+        # if (self.isWriteImage):
+        #     cv2.imwrite(self.pathToStoreImg + time.ctime(time.time()) + '- raw-image' + '.png', image)
+        #     cv2.imwrite(self.pathToStoreImg + time.ctime(time.time()) + '- crop-image' + '.png', cropImage)
 
         for i in range(0, width, self.pixelBlock):
             for j in range(0, height, self.pixelBlock):
                 cropImage[i:i+self.pixelBlock, j:j+self.pixelBlock] = np.mean(cropImage[i:i+self.pixelBlock, j:j+self.pixelBlock])
         return cropImage
 
-    def onSubBlockGrayImage(self):
+    def onSubBlockGrayImage(self, inputImg1, inputImg2):
         nBlock = 0
         ndBlock = 0
         time.sleep(self.timeToCapture)
-        image1 = self.grayImageToBlockGrayImage()
+        image1 = self.grayImageToBlockGrayImage(inputImg1)
         time.sleep(self.timeToCapture)
-        image2 = self.grayImageToBlockGrayImage()
+        image2 = self.grayImageToBlockGrayImage(inputImg2)
         
         width, height = image1.shape
         blackImage = np.zeros((width, height), np.uint8)
@@ -73,11 +66,11 @@ class timeDecision:
             cv2.imwrite(self.pathToStoreImg + time.ctime(time.time()) + '- block-image2' + '.png', image2)
             cv2.imwrite(self.pathToStoreImg + time.ctime(time.time()) + '- black-image' + '.png', blackImage)
 
-        logger.info('ndBlock: %s, nBlock: %s, rate: %s', ndBlock, nBlock, ndBlock/nBlock*100)
+        print('ndBlock: ', ndBlock, 'nBlock: ', nBlock, 'rate: ', ndBlock/nBlock*100)
         return nBlock, ndBlock
 
-    def trafficDensityAnalysis(self):
-        nBlock, ndBlock = self.onSubBlockGrayImage()
+    def trafficDensityAnalysis(self, image1, image2):
+        nBlock, ndBlock = self.onSubBlockGrayImage(image1, image2)
         rate = (ndBlock/nBlock)*100
 
         if (rate >= 0 and rate < 7):
@@ -97,3 +90,13 @@ class timeDecision:
             state = 'very-high'
 
         return int(timeGreen), int(rate), state
+
+northStreet = timeDecision(648, 1093, 297, 683, 10, 50, 0.5, True)
+print('Running..')
+
+for i in range (0, 6):
+    for j in range (i+1, 7):
+        print(i, j)
+        raw1 = cv2.imread('raw-image' + str(i) + '.png')
+        raw2 = cv2.imread('raw-image' + str(j) + '.png')
+        print(northStreet.trafficDensityAnalysis(raw1, raw2))
