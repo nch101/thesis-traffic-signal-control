@@ -68,12 +68,12 @@ default = config['DEFAULT']
 timeToUpdate = int(default['timeToUpdate'])
 
 def showLight():
-    numberLight1.showNumber(vals.timeLight[0])
-    numberLight2.showNumber(vals.timeLight[1])
-    trafficLight1.showLight(vals.lightStatus[0])
-    trafficLight2.showLight(vals.lightStatus[1])
-    trafficLight3.showLight(vals.lightStatus[2])
-    trafficLight4.showLight(vals.lightStatus[3])
+    numberLight1.showNumber(vals.timeLight[3])
+    numberLight2.showNumber(vals.timeLight[2])
+    trafficLight1.showLight(vals.lightStatus[3])
+    trafficLight2.showLight(vals.lightStatus[2])
+    trafficLight3.showLight(vals.lightStatus[1])
+    trafficLight4.showLight(vals.lightStatus[0])
 
 def countDown():
     for i in range(0, vals.nTrafficLights):
