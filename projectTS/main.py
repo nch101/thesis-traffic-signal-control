@@ -35,23 +35,34 @@ config.read('config.ini')
 
 stopThread = threading.Event()
 
-# street1Conf = config['NORTH-STREET']
-# numberLight1 = showNumber(int(street1Conf['data_pin']), 
-#                         int(street1Conf['clock_pin']), 
-#                         int(street1Conf['latch_pin']))
+# nConfig = config['NORTH-STREET']
+# numberLight1 = showNumber(int(nConfig['data_pin']), 
+#                         int(nConfig['clock_pin']), 
+#                         int(nConfig['latch_pin']))
 
-# trafficLight1 = showLight(int(street1Conf['red_pin']),
-#                         int(street1Conf['yellow_pin']),
-#                         int(street1Conf['green_pin']))
+# trafficLight1 = showLight(int(nConfig['red_pin']),
+#                         int(nConfig['yellow_pin']),
+#                         int(nConfig['green_pin']))
 
-# street2Conf = config['WEST-STREET']
-# numberLight2 = showNumber(int(street2Conf['data_pin']), 
-#                         int(street2Conf['clock_pin']), 
-#                         int(street2Conf['latch_pin']))
+# wConfig = config['WEST-STREET']
+# numberLight2 = showNumber(int(wConfig['data_pin']), 
+#                         int(wConfig['clock_pin']), 
+#                         int(wConfig['latch_pin']))
 
-# trafficLight2 = showLight(int(street2Conf['red_pin']),
-#                         int(street2Conf['yellow_pin']),
-#                         int(street2Conf['green_pin']))
+# trafficLight2 = showLight(int(wConfig['red_pin']),
+#                         int(wConfig['yellow_pin']),
+#                         int(wConfig['green_pin']))
+
+# sConfig = config['SOUTH-STREET']
+# trafficLight3 = showLight(int(sConfig['red_pin']),
+#                         int(sConfig['yellow_pin']),
+#                         int(sConfig['green_pin']))
+
+# eConfig = config['EAST-STREET']
+# trafficLight4 = showLight(int(eConfig['red_pin']),
+#                         int(eConfig['yellow_pin']),
+#                         int(eConfig['green_pin']))
+
 
 default = config['DEFAULT']
 timeToUpdate = int(default['timeToUpdate'])
@@ -61,6 +72,8 @@ def showLight():
     numberLight2.showNumber(vals.timeLight[1])
     trafficLight1.showLight(vals.lightStatus[0])
     trafficLight2.showLight(vals.lightStatus[1])
+    trafficLight3.showLight(vals.lightStatus[2])
+    trafficLight4.showLight(vals.lightStatus[3])
 
 def countDown():
     for i in range(0, vals.nTrafficLights):
@@ -104,15 +117,15 @@ def onControlAndDisplay(stop_event):
 try:
     thread1 = threading.Thread(target=onControlAndDisplay, args=(stopThread, ))
     thread2 = threading.Thread(target=northStreet, args=(stopThread, ))
-    # thread3 = threading.Thread(target=westStreet, args=(stopThread, ))
+    thread3 = threading.Thread(target=westStreet, args=(stopThread, ))
 
     thread1.start()
     thread2.start()
-    # thread3.start()
+    thread3.start()
 
     thread1.join()
     thread2.join()
-    # thread3.join()
+    thread3.join()
 
 except KeyboardInterrupt:
     logger.info('Keyboard interrupt')
