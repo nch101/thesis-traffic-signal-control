@@ -89,10 +89,10 @@ class timeDecision:
         elif (rate >= 15 and rate < 25):
             timeGreen = 5/3*rate + 40/3
             state = 'medium'
-        elif (rate >= 25 and rate < 30):
+        elif (rate >= 25 and rate < 40):
             timeGreen = 5/3*rate + 40/3
             state = 'high'
-        elif (rate >= 30 and rate <= 100):
+        elif (rate >= 40 and rate <= 100):
             timeGreen = 80
             state = 'very-high'
 
