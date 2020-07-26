@@ -1,6 +1,7 @@
 *.log
 *.pyc
 *.png
+
 projectTS/test.py
 tests/__pycache__/
 projectTS/__pycache__/

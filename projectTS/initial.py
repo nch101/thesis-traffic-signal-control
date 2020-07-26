@@ -11,12 +11,13 @@ config = configparser.ConfigParser()
 config.read('config.ini')
 
 defaultConf = config['DEFAULT']
-getDataURL = defaultConf['getData']
+server = defaultConf['server']
+getDataNsp = defaultConf['getDataNsp']
 interID = defaultConf['intersection_id']
 token = defaultConf['access_token']
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-intersection = getData(getDataURL, interID, token)
+intersection = getData(server + getDataNsp, interID, token)
 
 def initConfig():
     intersection.getData()

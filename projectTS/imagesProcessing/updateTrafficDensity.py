@@ -10,11 +10,12 @@ config = configparser.ConfigParser()
 config.read('config.ini')
 
 default = config['DEFAULT']
-postDataURL = default['postData']
+server = default['server']
+postDataNsp = default['postDataNsp']
 interID = default['intersection_id']
 token = default['access_token']
 
-intersection = postData(postDataURL, interID, token)
+intersection = postData(server + postDataNsp, interID, token)
 
 def updateTrafficDensity():
     if (vals.stateWS != '' and vals.stateNS != ''):
