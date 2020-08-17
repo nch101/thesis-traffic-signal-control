@@ -5,7 +5,7 @@
 # - *- coding: utf- 8 - *-
 
 import sys, os
-projectPath = os.path.expanduser('~/Documents/py-project')
+projectPath = os.path.expanduser('~/Documents/thesis-traffic-signal-control')
 sys.path.append(projectPath)
 
 import logging
@@ -23,9 +23,9 @@ import projectTS.vals as vals
 # from projectTS.lib.showLight import showLight
 from projectTS.socketIO.socket import *
 from projectTS.initial import initConfig, initAutomatic, initAutomaticFlexible, initManual
-from projectTS.imagesProcessing.northStreet import northStreet
-from projectTS.imagesProcessing.westStreet import westStreet
-from projectTS.imagesProcessing.updateTrafficDensity import updateTrafficDensity
+# from projectTS.imagesProcessing.northStreet import northStreet
+# from projectTS.imagesProcessing.westStreet import westStreet
+# from projectTS.imagesProcessing.updateTrafficDensity import updateTrafficDensity
 from projectTS.modeControl.updateMode import updateModeControl
 from projectTS.socketIO.socket import updateStateLight
 
@@ -99,7 +99,7 @@ def onControlAndDisplay(stop_event):
     else:
         pass
     
-    preTime = time.time()
+    # preTime = time.time()
 
     while not stop_event.wait(0):
         updateModeControl()
@@ -108,9 +108,9 @@ def onControlAndDisplay(stop_event):
         logger.debug('Time light: %s', vals.timeLight)
         updateStateLight()
         # showLight()
-        if (time.time() - preTime) >= timeToUpdate:
-            preTime = time.time()
-            updateTrafficDensity()
+        # if (time.time() - preTime) >= timeToUpdate:
+        #     preTime = time.time()
+        #     updateTrafficDensity()
         time.sleep(1)
         countDown()
 
